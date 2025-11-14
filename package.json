@@ -33,16 +33,21 @@
     "npm": "8.* || 9.*"
   },
   "dependencies": {
+    "@dcl/schemas": "^19.8.0",
+    "@dcl/single-sign-on-client": "^0.1.0",
     "@dcl/ui-env": "^1.5.1",
+    "decentraland-connect": "^10.0.0",
     "decentraland-ui2": "^0.23.3",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
     "@dcl/eslint-config": "^2.2.1",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react": "^4.3.1",

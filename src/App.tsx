@@ -1,13 +1,13 @@
-import { Box, Typography } from "decentraland-ui2"
+import { type FC, memo } from "react"
+import { Box } from "decentraland-ui2"
+import { AppRoutes } from "./AppRoutes"
+import { Navbar } from "./components/Navbar"
 
-const App = () => {
+export const App: FC = memo(() => {
   return (
     <Box>
-      <Typography variant="h4">
-        This is a Decentraland dApps template
-      </Typography>
+      <Navbar />
+      <AppRoutes />
     </Box>
   )
-}
-
-export { App }
+})
