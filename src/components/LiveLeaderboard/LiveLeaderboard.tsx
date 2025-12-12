@@ -4,16 +4,13 @@ import { mockLeaderboardRows } from "./mockData"
 import {
   LiveLeaderboardContainer,
   LiveLeaderboardTitle,
-  TableWrapper,
 } from "./LiveLeaderboard.styled"
 
 export const LiveLeaderboard: FC = memo(() => {
   return (
     <LiveLeaderboardContainer>
       <LiveLeaderboardTitle>Live October Leaderboard</LiveLeaderboardTitle>
-      <TableWrapper>
-        <ScenesTable rows={mockLeaderboardRows} />
-      </TableWrapper>
+      <ScenesTable rows={mockLeaderboardRows} />
     </LiveLeaderboardContainer>
   )
 })
