@@ -5,7 +5,6 @@ const Container = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  marginTop: theme.spacing(6),
   padding: theme.spacing(4),
   minHeight: "100vh",
   background: "linear-gradient(270deg, #A042CD -55.09%, #140323 164.07%)",
