@@ -16,8 +16,8 @@ export const PreviousWinners: FC = memo(() => {
           October Winners
         </Typography>
         <MonthSelect defaultValue="october-2025">
-          <MenuItem value="october-2025">October 2025</MenuItem>
-          <MenuItem value="november-2025">November 2025</MenuItem>
+          <MenuItem value="october-2025">OCTOBER 2025</MenuItem>
+          <MenuItem value="november-2025">NOVEMBER 2025</MenuItem>
         </MonthSelect>
       </PreviousWinnersHeader>
       <ScenesGrid>

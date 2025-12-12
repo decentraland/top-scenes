@@ -8,8 +8,12 @@ const PreviousWinnersContainer = styled(Box)(({ theme }) => ({
   flexDirection: "column",
   alignItems: "center",
   width: "100%",
+  maxWidth: "1920px",
   justifyContent: "space-between",
   boxSizing: "border-box",
+  [theme.breakpoints.down("sm")]: {
+    borderRadius: 0,
+  },
 }))
 
 const PreviousWinnersHeader = styled(Box)(() => ({
@@ -57,18 +61,29 @@ const MonthSelect = styled(Select)(({ theme }) => ({
 
 const ScenesGrid = styled(Box)(({ theme }) => ({
   display: "grid",
-  gridTemplateColumns: "repeat(4, 1fr)",
-  gap: theme.spacing(3),
+  gridTemplateColumns: "repeat(12, 1fr)",
+  gap: theme.spacing(2),
   width: "100%",
   marginTop: theme.spacing(4),
-  [theme.breakpoints.down("lg")]: {
-    gridTemplateColumns: "repeat(3, 1fr)",
+  "& > *": {
+    width: "100% !important",
+    maxWidth: "100% !important",
+    minWidth: 0,
+    gridColumn: "span 4",
   },
-  [theme.breakpoints.down("md")]: {
-    gridTemplateColumns: "repeat(2, 1fr)",
+  [theme.breakpoints.up("xl")]: {
+    "& > *": {
+      gridColumn: "span 3",
+    },
+    "& > *:nth-of-type(1), & > *:nth-of-type(2), & > *:nth-of-type(3)": {
+      gridColumn: "span 4",
+    },
   },
   [theme.breakpoints.down("sm")]: {
-    gridTemplateColumns: "repeat(1, 1fr)",
+    gridTemplateColumns: "repeat(2, 1fr)",
+    "& > *": {
+      gridColumn: "span 1",
+    },
   },
 }))
 
