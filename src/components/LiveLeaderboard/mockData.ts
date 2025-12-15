@@ -1,4 +1,5 @@
 import type { SceneRowData } from "decentraland-ui2"
+import { dclTheme } from "decentraland-ui2"
 import sceneThumbnail from "../../images/scene-thumbnail.png"
 import type { Avatar } from "@dcl/schemas"
 
@@ -89,6 +90,7 @@ const mockLeaderboardRows: SceneRowData[] = Array.from(
       creator: mockAvatar,
       location: "MetadyneLabs.dcl.eth",
       positionChange: i === 2 ? -1 : 1,
+      borderColor: dclTheme.palette.gradient.go,
     }
   }
 )

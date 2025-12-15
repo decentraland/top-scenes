@@ -21,13 +21,14 @@ export const PreviousWinners: FC = memo(() => {
         </MonthSelect>
       </PreviousWinnersHeader>
       <ScenesGrid>
-        {mockScenes.map((scene) => (
+        {mockScenes.map((scene, index) => (
           <SceneCard
             key={scene.id}
             image={scene.image}
             sceneName={scene.sceneName}
             avatar={scene.avatar}
             withShadow
+            withBorder={index < 3}
             coordinates={scene.coordinates}
             showOnHover={["location", "jumpInButton"]}
           />

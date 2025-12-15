@@ -18,4 +18,34 @@ const LiveLeaderboardTitle = styled(Typography)(({ theme }) => ({
   },
 }))
 
-export { LiveLeaderboardContainer, LiveLeaderboardTitle }
+const TablesWrapper = styled(Box)(() => ({
+  display: "flex",
+  width: "100%",
+  alignItems: "flex-start",
+  gap: 0,
+}))
+
+const RankTableWrapper = styled(Box)(() => ({
+  maxWidth: "90px",
+  flexShrink: 0,
+}))
+
+const RankCell = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  fontSize: "20px",
+  fontWeight: 600,
+  height: theme.spacing(8.75),
+  [theme.breakpoints.down("xs")]: {
+    height: theme.spacing(7.5),
+  },
+}))
+
+export {
+  LiveLeaderboardContainer,
+  LiveLeaderboardTitle,
+  RankCell,
+  RankTableWrapper,
+  TablesWrapper,
+}
