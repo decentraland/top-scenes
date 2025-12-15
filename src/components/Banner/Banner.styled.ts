@@ -18,9 +18,16 @@ const BannerContainer = styled(Box)(({ theme }) => ({
     mask: "linear-gradient(to bottom, transparent 0%, black 100%)",
     WebkitMask: "linear-gradient(to bottom, transparent 0%, black 100%)",
     pointerEvents: "none",
+    // [theme.breakpoints.down("sm")]: {
+    //   display: "none",
+    // },
   },
   [theme.breakpoints.down("sm")]: {
-    height: "400px",
+    height: "350px",
+    overflow: "hidden",
+  },
+  [theme.breakpoints.down("xs")]: {
+    height: "300px",
     overflow: "hidden",
   },
 }))
@@ -48,12 +55,20 @@ const BannerContent = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     left: theme.spacing(4),
   },
+  [theme.breakpoints.down("sm")]: {
+    top: "50%",
+  },
   [theme.breakpoints.down("xs")]: {
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    top: "auto",
+    bottom: 0,
+    left: 0,
+    transform: "none",
     textAlign: "center",
-    maxWidth: "90%",
-    gridTemplateColumns: "1fr",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    width: "100%",
+    padding: theme.spacing(2),
   },
 }))
 
@@ -73,6 +88,7 @@ const BannerTitle = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("xs")]: {
     fontSize: "24px",
     whiteSpace: "normal",
+    marginBottom: theme.spacing(1),
   },
 }))
 
@@ -109,7 +125,7 @@ const LiveLeaderboardButton = styled(Button)(({ theme }) => ({
   },
 }))
 
-const BannerOverlay = styled("img")(() => ({
+const BannerOverlay = styled("img")(({ theme }) => ({
   position: "absolute",
   width: "45%",
   top: "40%",
@@ -119,6 +135,13 @@ const BannerOverlay = styled("img")(() => ({
   objectFit: "contain",
   pointerEvents: "none",
   zIndex: 1,
+  [theme.breakpoints.down("sm")]: {
+    top: "50%",
+  },
+  [theme.breakpoints.down("xs")]: {
+    width: "70%",
+    top: "30%",
+  },
 }))
 
 export {

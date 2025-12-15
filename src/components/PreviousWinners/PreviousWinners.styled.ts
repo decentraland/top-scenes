@@ -7,7 +7,7 @@ const PreviousWinnersContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   position: "relative",
-  top: "-125px",
+  top: "-90px",
   alignItems: "center",
   width: "100%",
   maxWidth: "1920px",
@@ -16,6 +16,7 @@ const PreviousWinnersContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     borderRadius: 0,
     padding: theme.spacing(2),
+    top: 0,
   },
 }))
 
