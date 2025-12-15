@@ -15,6 +15,7 @@ const PreviousWinnersContainer = styled(Box)(({ theme }) => ({
   boxSizing: "border-box",
   [theme.breakpoints.down("sm")]: {
     borderRadius: 0,
+    padding: theme.spacing(2),
   },
 }))
 
