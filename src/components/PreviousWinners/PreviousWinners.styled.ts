@@ -33,10 +33,11 @@ const MonthSelect = styled(Select)(({ theme }) => ({
   cursor: "pointer",
   transition: "background-color 0.2s ease",
   "& .MuiSelect-select": {
-    padding: theme.spacing(1.5, 2),
+    padding: theme.spacing(1, 1.5),
     paddingRight: theme.spacing(7),
     fontWeight: 600,
     cursor: "pointer",
+    fontSize: "12px",
   },
   "& .MuiOutlinedInput-notchedOutline": {
     border: "none",

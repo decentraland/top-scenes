@@ -1,8 +1,9 @@
-import { Box, Typography, styled } from "decentraland-ui2"
+import { Box, Button, Typography, styled } from "decentraland-ui2"
 
 const BannerContainer = styled(Box)(({ theme }) => ({
   position: "relative",
   width: "100%",
+  maxWidth: "1920px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -91,10 +92,41 @@ const BannerDescription = styled(Typography)(({ theme }) => ({
   },
 }))
 
+const LiveLeaderboardButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(3),
+  padding: theme.spacing(1.5, 3),
+  fontSize: "16px",
+  fontWeight: 600,
+  borderRadius: theme.spacing(1),
+  textTransform: "none",
+  maxWidth: "fit-content",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "14px",
+    padding: theme.spacing(1, 2),
+  },
+  [theme.breakpoints.down("xs")]: {
+    display: "none",
+  },
+}))
+
+const BannerOverlay = styled("img")(() => ({
+  position: "absolute",
+  width: "45%",
+  top: "40%",
+  right: 0,
+  transform: "translateY(-50%)",
+  maxHeight: "100%",
+  objectFit: "contain",
+  pointerEvents: "none",
+  zIndex: 1,
+}))
+
 export {
   BannerContainer,
   BannerContent,
   BannerDescription,
   BannerImage,
+  BannerOverlay,
   BannerTitle,
+  LiveLeaderboardButton,
 }

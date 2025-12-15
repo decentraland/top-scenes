@@ -1,7 +1,6 @@
 import { Box, Typography, styled } from "decentraland-ui2"
 
-const LiveLeaderboardContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(8, 0),
+const LiveLeaderboardContainer = styled(Box)(() => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
