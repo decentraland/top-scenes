@@ -13,8 +13,14 @@ const LiveLeaderboardTitle = styled(Typography)(({ theme }) => ({
   fontSize: "48px",
   fontWeight: 700,
   width: "100%",
+  padding: theme.spacing(4),
   [theme.breakpoints.down("xl")]: {
     fontSize: "32px",
+  },
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "24px",
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 }))
 
@@ -25,9 +31,15 @@ const TablesWrapper = styled(Box)(() => ({
   gap: 0,
 }))
 
-const RankTableWrapper = styled(Box)(() => ({
-  maxWidth: "90px",
+const RankTableWrapper = styled(Box)(({ theme }) => ({
+  maxWidth: theme.spacing(11),
   flexShrink: 0,
+  "& .MuiTableContainer-root": {
+    padding: theme.spacing(0, 0, 0, 2),
+  },
+  [theme.breakpoints.down("sm")]: {
+    maxWidth: theme.spacing(10),
+  },
 }))
 
 const RankCell = styled(Box)(({ theme }) => ({

@@ -1,6 +1,7 @@
 import { type FC, memo } from "react"
 import { ScenesTable, dclTable } from "decentraland-ui2"
 import { mockLeaderboardRows } from "./mockData"
+import { getBorderColor } from "../../utils/rankColors"
 import {
   LiveLeaderboardContainer,
   LiveLeaderboardTitle,
@@ -13,13 +14,6 @@ type RankRow = {
   key: string
   rank: number
   borderColor?: string
-}
-
-const getBorderColor = (rank: number): string | undefined => {
-  if (rank === 1) return dclColors.gradient.gold
-  if (rank === 2) return dclColors.gradient.silver
-  if (rank === 3) return dclColors.gradient.bronze
-  return undefined
 }
 
 const rankRows: RankRow[] = mockLeaderboardRows.map((_, index) => ({
