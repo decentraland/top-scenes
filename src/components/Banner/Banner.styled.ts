@@ -141,7 +141,7 @@ const BannerOverlay = styled("img")(({ theme }) => ({
   [theme.breakpoints.down("xs")]: {
     width: "70%",
     top: "40%",
-    right: "20px",
+    right: "-20px",
   },
 }))
 

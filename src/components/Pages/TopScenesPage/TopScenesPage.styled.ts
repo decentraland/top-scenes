@@ -19,6 +19,9 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     padding: 0,
   },
+  [theme.breakpoints.down("xs")]: {
+    display: "none",
+  },
 }))
 
 export { ContentWrapper, PageContainer }

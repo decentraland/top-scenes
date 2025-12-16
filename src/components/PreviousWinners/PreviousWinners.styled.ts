@@ -20,11 +20,21 @@ const PreviousWinnersContainer = styled(Box)(({ theme }) => ({
   },
 }))
 
-const PreviousWinnersHeader = styled(Box)(() => ({
+const PreviousWinnersHeader = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   width: "100%",
+  [theme.breakpoints.down("xs")]: {
+    justifyContent: "flex-end",
+  },
+}))
+
+const PreviousWinnersTitle = styled(Box)(({ theme }) => ({
+  display: "block",
+  [theme.breakpoints.down("xs")]: {
+    display: "none",
+  },
 }))
 
 const MonthSelect = styled(Select)(({ theme }) => ({
@@ -96,5 +106,6 @@ export {
   MonthSelect,
   PreviousWinnersContainer,
   PreviousWinnersHeader,
+  PreviousWinnersTitle,
   ScenesGrid,
 }

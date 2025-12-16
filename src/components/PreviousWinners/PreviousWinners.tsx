@@ -5,6 +5,7 @@ import {
   MonthSelect,
   PreviousWinnersContainer,
   PreviousWinnersHeader,
+  PreviousWinnersTitle,
   ScenesGrid,
 } from "./PreviousWinners.styled"
 
@@ -12,9 +13,11 @@ export const PreviousWinners: FC = memo(() => {
   return (
     <PreviousWinnersContainer>
       <PreviousWinnersHeader>
-        <Typography variant="h5" fontWeight={700}>
-          October Winners
-        </Typography>
+        <PreviousWinnersTitle>
+          <Typography variant="h5" fontWeight={700}>
+            October Winners
+          </Typography>
+        </PreviousWinnersTitle>
         <MonthSelect defaultValue="october-2025">
           <MenuItem value="october-2025">OCTOBER 2025</MenuItem>
           <MenuItem value="november-2025">NOVEMBER 2025</MenuItem>

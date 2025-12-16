@@ -13,7 +13,7 @@ const LiveLeaderboardTitle = styled(Typography)(({ theme }) => ({
   fontSize: "48px",
   fontWeight: 700,
   width: "100%",
-  padding: theme.spacing(4),
+  padding: theme.spacing(2),
   [theme.breakpoints.down("xl")]: {
     fontSize: "32px",
   },
@@ -22,13 +22,17 @@ const LiveLeaderboardTitle = styled(Typography)(({ theme }) => ({
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
+  [theme.breakpoints.down("xs")]: {
+    display: "none",
+  },
 }))
 
-const TablesWrapper = styled(Box)(() => ({
+const TablesWrapper = styled(Box)(({ theme }) => ({
   display: "flex",
   width: "100%",
   alignItems: "flex-start",
   gap: 0,
+  paddingTop: theme.spacing(1.5),
 }))
 
 const RankTableWrapper = styled(Box)(({ theme }) => ({
