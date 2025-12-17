@@ -33,7 +33,7 @@ const rankColumns: dclTable.Column<RankRow>[] = [
 
 export const LiveLeaderboard: FC = memo(() => {
   return (
-    <LiveLeaderboardContainer>
+    <LiveLeaderboardContainer id="leaderboard">
       <LiveLeaderboardTitle>Live October Leaderboard</LiveLeaderboardTitle>
       <TablesWrapper>
         <RankTableWrapper>

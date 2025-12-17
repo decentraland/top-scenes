@@ -22,7 +22,11 @@ export const Banner: FC = memo(() => {
           Discover Decentraland&apos;s hottest scenes as they race to the top of
           the leaderboard each month!
         </BannerDescription>
-        <LiveLeaderboardButton variant="contained" color="secondary">
+        <LiveLeaderboardButton
+          variant="contained"
+          color="secondary"
+          href="#leaderboard"
+        >
           ⭐️ Live Leaderboard
         </LiveLeaderboardButton>
       </BannerContent>
