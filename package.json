@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite",
     "start": "vite",
-    "prebuild": "node scripts/prebuild.js",
+    "prebuild": "node scripts/prebuild.cjs",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "test": "jest",
@@ -27,7 +27,7 @@
   "bugs": {
     "url": "https://github.com/decentraland/top-scenes/issues"
   },
-  "homepage": "https://github.com/decentraland/top-scenes#readme",
+  "homepage": "",
   "engines": {
     "node": "20.*",
     "npm": "8.* || 9.*"
@@ -36,11 +36,13 @@
     "@dcl/schemas": "^19.8.0",
     "@dcl/single-sign-on-client": "^0.1.0",
     "@dcl/ui-env": "^1.5.1",
+    "@reduxjs/toolkit": "^2.11.2",
     "decentraland-connect": "^10.0.0",
     "decentraland-ui2": "^1.0.3",
     "events": "^3.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
@@ -52,6 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^7.15.0",
     "@typescript-eslint/parser": "^7.15.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "dotenv": "^17.2.3",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-jest": "^3.0.2",
