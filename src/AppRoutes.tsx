@@ -8,7 +8,7 @@ export const AppRoutes: FC = memo(() => {
 
   return (
     <Routes>
-      <Route path="/top-scenes-program" element={<TopScenesPage />} />
+      <Route path="/top-scenes" element={<TopScenesPage />} />
     </Routes>
   )
 })

@@ -1,5 +1,6 @@
 import { type FC, memo } from "react"
 import { ScenesTable, dclTable } from "decentraland-ui2"
+import { BestNewScene } from "../BestNewScene"
 import { mockLeaderboardRows } from "./mockData"
 import { getBorderColor } from "../../utils/rankColors"
 import {
@@ -45,6 +46,7 @@ export const LiveLeaderboard: FC = memo(() => {
         </RankTableWrapper>
         <ScenesTable rows={mockLeaderboardRows} />
       </TablesWrapper>
+      <BestNewScene />
     </LiveLeaderboardContainer>
   )
 })

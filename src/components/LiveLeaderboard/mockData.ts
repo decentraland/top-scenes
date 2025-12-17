@@ -95,4 +95,13 @@ const mockLeaderboardRows: SceneRowData[] = Array.from(
   }
 )
 
-export { mockLeaderboardRows }
+const mockBestNewScene: SceneRowData = {
+  key: "best-new",
+  sceneName: "WonderMine Crafting Game DCL SDK7",
+  thumbnail: sceneThumbnail,
+  creator: mockAvatar,
+  location: "MetadyneLabs.dcl.eth",
+  positionChange: 1,
+}
+
+export { mockBestNewScene, mockLeaderboardRows }

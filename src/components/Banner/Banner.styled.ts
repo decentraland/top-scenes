@@ -18,9 +18,6 @@ const BannerContainer = styled(Box)(({ theme }) => ({
     mask: "linear-gradient(to bottom, transparent 0%, black 100%)",
     WebkitMask: "linear-gradient(to bottom, transparent 0%, black 100%)",
     pointerEvents: "none",
-    // [theme.breakpoints.down("sm")]: {
-    //   display: "none",
-    // },
   },
   [theme.breakpoints.down("sm")]: {
     height: "350px",
