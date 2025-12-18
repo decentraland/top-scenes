@@ -1,5 +1,5 @@
 import { type FC, memo } from "react"
-import { MenuItem, SceneCard, Typography } from "decentraland-ui2"
+import { MenuItem, SceneCard, Typography, dclColors } from "decentraland-ui2"
 import { mockScenes } from "../Pages/TopScenesPage/mockData"
 import {
   MonthSelect,
@@ -8,6 +8,13 @@ import {
   PreviousWinnersTitle,
   ScenesGrid,
 } from "./PreviousWinners.styled"
+
+const getBorderColor = (index: number): string | undefined => {
+  if (index === 0) return dclColors.gradient.gold
+  if (index === 1) return dclColors.gradient.silver
+  if (index === 2) return dclColors.gradient.bronze
+  return undefined
+}
 
 export const PreviousWinners: FC = memo(() => {
   return (
@@ -31,7 +38,8 @@ export const PreviousWinners: FC = memo(() => {
             sceneName={scene.sceneName}
             avatar={scene.avatar}
             withShadow
-            withBorder={index < 3}
+            borderColor={getBorderColor(index)}
+            cornerBadge={index >= 3 ? String(index + 1) : undefined}
             coordinates={scene.coordinates}
             showOnHover={["location", "jumpInButton"]}
           />

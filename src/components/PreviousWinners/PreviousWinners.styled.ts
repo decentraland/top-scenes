@@ -77,12 +77,11 @@ const MonthSelect = styled(Select)(({ theme }) => ({
 const ScenesGrid = styled(Box)(({ theme }) => ({
   display: "grid",
   gridTemplateColumns: "repeat(12, 1fr)",
-  gap: theme.spacing(2),
+  columnGap: theme.spacing(2),
+  rowGap: theme.spacing(4),
   width: "100%",
   marginTop: theme.spacing(4),
   "& > *": {
-    width: "100% !important",
-    maxWidth: "100% !important",
     minWidth: 0,
     gridColumn: "span 4",
   },
