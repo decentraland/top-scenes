@@ -23,11 +23,6 @@ export const MobileTabs: FC = memo(() => {
 
   const handleTabChange = (_event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
-    if (newValue === 1) {
-      window.history.replaceState(null, "", "#leaderboard")
-    } else {
-      window.history.replaceState(null, "", window.location.pathname)
-    }
   }
 
   return (
