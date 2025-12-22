@@ -1,4 +1,4 @@
-import sceneThumbnail from "../../../images/scene-thumbnail.png"
+import sceneThumbnail from "../../../images/scene-thumbnail.webp"
 import type { Avatar } from "@dcl/schemas"
 
 const exampleAvatar: Avatar = {

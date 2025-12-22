@@ -1,6 +1,6 @@
 import { type FC, memo } from "react"
-import bannerBg from "../../images/banner_bg.png"
-import bannerOverlay from "../../images/banner_overlay.png"
+import bannerBg from "../../images/banner_bg.webp"
+import bannerOverlay from "../../images/banner_overlay.webp"
 import {
   BannerContainer,
   BannerContent,
