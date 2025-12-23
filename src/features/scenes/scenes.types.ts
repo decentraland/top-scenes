@@ -17,4 +17,20 @@ type SceneRanking = {
   lastEventRegisteredAt: string
 }
 
-export type { SceneRanking, SceneRankingResponse }
+type PreviousMonthRanking = {
+  placeName: string
+  locationId: string
+  creator: string
+  contactName: string
+  ranking: number
+  periodDate: string
+}
+
+type PreviousMonthRankingByPeriod = Record<string, PreviousMonthRanking[]>
+
+export type {
+  PreviousMonthRanking,
+  PreviousMonthRankingByPeriod,
+  SceneRanking,
+  SceneRankingResponse,
+}

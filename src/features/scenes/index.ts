@@ -1,2 +1,11 @@
-export { scenesClient, useGetCurrentMonthRankingQuery } from "./scenes.client"
-export type { SceneRanking, SceneRankingResponse } from "./scenes.types"
+export {
+  scenesClient,
+  useGetCurrentMonthRankingQuery,
+  useGetPreviousMonthRankingQuery,
+} from "./scenes.client"
+export type {
+  PreviousMonthRanking,
+  PreviousMonthRankingByPeriod,
+  SceneRanking,
+  SceneRankingResponse,
+} from "./scenes.types"

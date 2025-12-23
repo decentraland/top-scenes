@@ -1,10 +1,17 @@
-import { type FC, memo } from "react"
+import { type FC, memo, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { MenuItem, SceneCard, Typography, dclColors } from "decentraland-ui2"
+import {
+  CircularProgress,
+  MenuItem,
+  SceneCard,
+  SelectChangeEvent,
+  Typography,
+  dclColors,
+} from "decentraland-ui2"
+import { useGetPreviousWinners } from "./useGetPreviousWinners"
 import positionStar1 from "../../images/Position_Star_Medium_1.webp"
 import positionStar2 from "../../images/Position_Star_Medium_2.webp"
 import positionStar3 from "../../images/Position_Star_Medium_3.webp"
-import { mockScenes } from "../Pages/TopScenesPage/mockData"
 import {
   MonthSelect,
   PreviousWinnersContainer,
@@ -29,7 +36,40 @@ const getCornerBadgeImage = (index: number): string | undefined => {
 
 export const PreviousWinners: FC = memo(() => {
   const { t } = useTranslation()
-  const currentMonth = t("previousWinners.months.october")
+  const [selectedPeriod, setSelectedPeriod] = useState("")
+
+  const { scenes, availablePeriods, isLoading } =
+    useGetPreviousWinners(selectedPeriod)
+
+  useEffect(() => {
+    if (availablePeriods.length > 0 && !selectedPeriod) {
+      setSelectedPeriod(availablePeriods[0])
+    }
+  }, [availablePeriods, selectedPeriod])
+
+  const handlePeriodChange = (event: SelectChangeEvent<unknown>) => {
+    setSelectedPeriod(event.target.value as string)
+  }
+
+  const getMonthKey = (period: string): string => period.split("/")[0] || "01"
+
+  const currentMonth = t(
+    `previousWinners.months.${getMonthKey(selectedPeriod)}`
+  )
+
+  if (isLoading && scenes.length === 0) {
+    return (
+      <PreviousWinnersContainer>
+        <PreviousWinnersHeader>
+          <PreviousWinnersTitle>
+            <Typography variant="h5" fontWeight={700}>
+              <CircularProgress />
+            </Typography>
+          </PreviousWinnersTitle>
+        </PreviousWinnersHeader>
+      </PreviousWinnersContainer>
+    )
+  }
 
   return (
     <PreviousWinnersContainer>
@@ -39,17 +79,19 @@ export const PreviousWinners: FC = memo(() => {
             {t("previousWinners.title", { month: currentMonth })}
           </Typography>
         </PreviousWinnersTitle>
-        <MonthSelect defaultValue="october-2025">
-          <MenuItem value="october-2025">
-            {`${t("previousWinners.months.october").toUpperCase()} 2025`}
-          </MenuItem>
-          <MenuItem value="november-2025">
-            {`${t("previousWinners.months.november").toUpperCase()} 2025`}
-          </MenuItem>
+        <MonthSelect value={selectedPeriod} onChange={handlePeriodChange}>
+          {availablePeriods.map((period) => {
+            const [month, year] = period.split("/")
+            return (
+              <MenuItem key={period} value={period}>
+                {`${t(`previousWinners.months.${month}`).toUpperCase()} 20${year}`}
+              </MenuItem>
+            )
+          })}
         </MonthSelect>
       </PreviousWinnersHeader>
-      <ScenesGrid>
-        {mockScenes.map((scene, index) => (
+      <ScenesGrid key={selectedPeriod}>
+        {scenes.map((scene, index) => (
           <SceneCard
             key={scene.id}
             image={scene.image}

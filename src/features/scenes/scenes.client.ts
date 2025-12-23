@@ -1,5 +1,16 @@
 import { client } from "../../services/client"
-import type { SceneRanking, SceneRankingResponse } from "./scenes.types"
+import type {
+  PreviousMonthRankingByPeriod,
+  SceneRanking,
+  SceneRankingResponse,
+} from "./scenes.types"
+
+const formatPeriod = (periodDate: string): string => {
+  const date = new Date(periodDate)
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0")
+  const year = String(date.getUTCFullYear()).slice(-2)
+  return `${month}/${year}`
+}
 
 const scenesClient = client.injectEndpoints({
   endpoints: (build) => ({
@@ -25,10 +36,49 @@ const scenesClient = client.injectEndpoints({
         ),
       providesTags: ["SceneRanking"],
     }),
+    getPreviousMonthRanking: build.query<PreviousMonthRankingByPeriod, void>({
+      query: () => "/current/scene-ranking-previous-month.json",
+      transformResponse: (
+        response: SceneRankingResponse
+      ): PreviousMonthRankingByPeriod => {
+        const rankings = response.values.map(
+          ([
+            placeName,
+            locationId,
+            creator,
+            contactName,
+            ranking,
+            periodDate,
+          ]) => ({
+            placeName,
+            locationId,
+            creator,
+            contactName,
+            ranking,
+            periodDate,
+          })
+        )
+
+        return rankings.reduce<PreviousMonthRankingByPeriod>((acc, item) => {
+          const period = formatPeriod(item.periodDate)
+          if (!acc[period]) {
+            acc[period] = []
+          }
+          acc[period].push(item)
+          return acc
+        }, {})
+      },
+      providesTags: ["SceneRanking"],
+    }),
   }),
   overrideExisting: false,
 })
 
-const { useGetCurrentMonthRankingQuery } = scenesClient
+const { useGetCurrentMonthRankingQuery, useGetPreviousMonthRankingQuery } =
+  scenesClient
 
-export { scenesClient, useGetCurrentMonthRankingQuery }
+export {
+  scenesClient,
+  useGetCurrentMonthRankingQuery,
+  useGetPreviousMonthRankingQuery,
+}
