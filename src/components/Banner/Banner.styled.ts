@@ -3,7 +3,7 @@ import { Box, Button, Typography, styled } from "decentraland-ui2"
 const BannerContainer = styled(Box)(({ theme }) => ({
   position: "relative",
   width: "100%",
-  maxWidth: "1600px",
+  maxWidth: "1920px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
