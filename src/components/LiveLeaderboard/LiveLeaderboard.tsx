@@ -1,10 +1,7 @@
-import { type FC, memo, useMemo } from "react"
+import { type FC, memo } from "react"
 import { ScenesTable, dclTable } from "decentraland-ui2"
-import { useGetProfilesQuery } from "../../features/profiles"
-import { useGetCurrentMonthRankingQuery } from "../../features/scenes"
-import { getBorderColor } from "../../utils/rankColors"
 import { BestNewScene } from "../BestNewScene"
-import { transformToSceneRowData } from "./utils"
+import { useGetRanking } from "./useGetRanking"
 import {
   LiveLeaderboardContainer,
   LiveLeaderboardTitle,
@@ -29,40 +26,7 @@ const rankColumns: dclTable.Column<RankRow>[] = [
 ]
 
 export const LiveLeaderboard: FC = memo(() => {
-  const {
-    data: rankings,
-    isLoading: isLoadingRankings,
-    isError: isErrorRankings,
-  } = useGetCurrentMonthRankingQuery()
-
-  const creatorAddresses = useMemo(() => {
-    if (!rankings) return []
-    const addresses = [
-      ...new Set(rankings.map((scene) => scene.creator.toLowerCase())),
-    ]
-    console.log("Requesting profiles for addresses:", addresses)
-    return addresses
-  }, [rankings])
-
-  const { data: profiles, isLoading: isLoadingProfiles } = useGetProfilesQuery(
-    { ids: creatorAddresses },
-    { skip: creatorAddresses.length === 0 }
-  )
-
-  const sceneRows = useMemo(() => {
-    if (!rankings) return []
-    return rankings.map((scene) => transformToSceneRowData(scene, profiles))
-  }, [rankings, profiles])
-
-  const rankRows: RankRow[] = useMemo(() => {
-    return sceneRows.map((_, index) => ({
-      key: String(index + 1),
-      rank: index + 1,
-      borderColor: getBorderColor(index + 1),
-    }))
-  }, [sceneRows])
-
-  const isLoading = isLoadingRankings || isLoadingProfiles
+  const { sceneRows, rankRows, isLoading, isError } = useGetRanking()
 
   if (isLoading) {
     return (
@@ -73,7 +37,7 @@ export const LiveLeaderboard: FC = memo(() => {
     )
   }
 
-  if (isErrorRankings) {
+  if (isError) {
     return (
       <LiveLeaderboardContainer id="leaderboard">
         <LiveLeaderboardTitle>Live December Leaderboard</LiveLeaderboardTitle>
