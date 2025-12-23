@@ -1,5 +1,5 @@
 import { type FC, memo } from "react"
-import { ScenesTable, dclTable } from "decentraland-ui2"
+import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
 import { BestNewScene } from "../BestNewScene"
 import { useGetRanking } from "./useGetRanking"
 import {
@@ -32,7 +32,7 @@ export const LiveLeaderboard: FC = memo(() => {
     return (
       <LiveLeaderboardContainer id="leaderboard">
         <LiveLeaderboardTitle>Live December Leaderboard</LiveLeaderboardTitle>
-        <TablesWrapper>Loading...</TablesWrapper>
+        <CircularProgress />
       </LiveLeaderboardContainer>
     )
   }

@@ -94,6 +94,7 @@ const ScenesGrid = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down("sm")]: {
     gridTemplateColumns: "repeat(2, 1fr)",
+    gap: "12px",
     "& > *": {
       gridColumn: "span 1",
     },

@@ -1,6 +1,8 @@
 import type { SceneRowData } from "decentraland-ui2"
+import { isEns } from "../../features/places"
 import sceneThumbnail from "../../images/scene-thumbnail.webp"
 import { getBorderColor } from "../../utils/rankColors"
+import type { Place } from "../../features/places"
 import type { SceneRanking } from "../../features/scenes"
 import type { Avatar } from "@dcl/schemas"
 
@@ -43,16 +45,32 @@ const createPlaceholderAvatar = (address: string, name: string): Avatar => ({
   links: [],
 })
 
+const getPlaceThumbnail = (
+  locationId: string,
+  places?: Record<string, Place>
+): string => {
+  if (!places) return sceneThumbnail
+
+  const location = locationId.includes("|")
+    ? locationId.replace("|", ",")
+    : locationId
+
+  if (isEns(location)) {
+    const place = places[location.toLowerCase()]
+    return place?.image || sceneThumbnail
+  }
+
+  const place = places[location]
+  return place?.image || sceneThumbnail
+}
+
 export const transformToSceneRowData = (
   scene: SceneRanking,
-  profiles?: Record<string, Avatar>
+  profiles?: Record<string, Avatar>,
+  places?: Record<string, Place>
 ): SceneRowData => {
   const creatorAddress = scene.creator.toLowerCase()
   const avatar = profiles?.[creatorAddress]
-
-  if (!avatar) {
-    console.log("Profile not found for:", creatorAddress, "- using placeholder")
-  }
 
   const finalAvatar =
     avatar || createPlaceholderAvatar(scene.creator, scene.contactName)
@@ -61,10 +79,12 @@ export const transformToSceneRowData = (
     ? scene.locationId.replace("|", ",")
     : scene.locationId
 
+  const thumbnail = getPlaceThumbnail(scene.locationId, places)
+
   return {
     key: String(scene.ranking),
     sceneName: scene.placeName,
-    thumbnail: sceneThumbnail,
+    thumbnail,
     creator: finalAvatar,
     location,
     positionChange: 0,

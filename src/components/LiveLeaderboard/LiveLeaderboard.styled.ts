@@ -37,6 +37,25 @@ const TablesWrapper = styled(Box)(({ theme }) => ({
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
   },
+  "& .MuiTableCell-root img": {
+    width: "100px",
+    minWidth: "100",
+    maxWidth: "100x",
+  },
+  [theme.breakpoints.down("sm")]: {
+    "& .MuiTableCell-root img": {
+      width: "70px",
+      minWidth: "70px",
+      maxWidth: "70px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      "& .MuiTableCell-root img": {
+        width: "50px",
+        minWidth: "50px",
+        maxWidth: "50px",
+      },
+    },
+  },
 }))
 
 const RankTableWrapper = styled(Box)(({ theme }) => ({
@@ -46,7 +65,7 @@ const RankTableWrapper = styled(Box)(({ theme }) => ({
     padding: theme.spacing(0, 0, 0, 2),
   },
   [theme.breakpoints.down("sm")]: {
-    maxWidth: theme.spacing(10),
+    maxWidth: "64px",
   },
 }))
 
