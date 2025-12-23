@@ -1,4 +1,5 @@
 import { type FC, type SyntheticEvent, memo, useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { useLocation } from "react-router-dom"
 import { LiveLeaderboard } from "../LiveLeaderboard"
 import { PreviousWinners } from "../PreviousWinners"
@@ -10,7 +11,9 @@ import {
 } from "./MobileTabs.styled"
 
 export const MobileTabs: FC = memo(() => {
+  const { t } = useTranslation()
   const location = useLocation()
+  const currentMonth = t("previousWinners.months.october")
   const [activeTab, setActiveTab] = useState(() => {
     return location.hash === "#leaderboard" ? 1 : 0
   })
@@ -23,18 +26,13 @@ export const MobileTabs: FC = memo(() => {
 
   const handleTabChange = (_event: SyntheticEvent, newValue: number) => {
     setActiveTab(newValue)
-    if (newValue === 1) {
-      window.history.replaceState(null, "", "#leaderboard")
-    } else {
-      window.history.replaceState(null, "", window.location.pathname)
-    }
   }
 
   return (
     <MobileTabsContainer id="mobile-tabs">
       <StyledTabs value={activeTab} onChange={handleTabChange}>
-        <StyledTab label="October's Top Scenes" />
-        <StyledTab label="Live Leaderboard" />
+        <StyledTab label={t("mobileTabs.topScenes", { month: currentMonth })} />
+        <StyledTab label={t("mobileTabs.liveLeaderboard")} />
       </StyledTabs>
       <TabContent>
         {activeTab === 0 && <PreviousWinners />}

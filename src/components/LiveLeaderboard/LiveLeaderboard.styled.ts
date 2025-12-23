@@ -33,6 +33,10 @@ const TablesWrapper = styled(Box)(({ theme }) => ({
   alignItems: "flex-start",
   gap: 0,
   paddingTop: theme.spacing(1.5),
+  "& .MuiTableCell-root": {
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
 }))
 
 const RankTableWrapper = styled(Box)(({ theme }) => ({

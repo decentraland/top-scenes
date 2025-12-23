@@ -1,5 +1,5 @@
 import type { SceneRowData } from "decentraland-ui2"
-import sceneThumbnail from "../../images/scene-thumbnail.png"
+import sceneThumbnail from "../../images/scene-thumbnail.webp"
 import { getBorderColor } from "../../utils/rankColors"
 import type { SceneRanking } from "../../features/scenes"
 import type { Avatar } from "@dcl/schemas"
