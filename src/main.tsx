@@ -6,6 +6,7 @@ import { DclThemeProvider, GlobalStyles, darkTheme } from "decentraland-ui2"
 import { App } from "./App"
 import { authConfig } from "./config/auth"
 import { AuthProvider } from "./contexts/auth"
+import "./intl/i18n"
 
 const globalStyles = {
   html: {

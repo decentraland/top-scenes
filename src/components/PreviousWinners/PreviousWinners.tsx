@@ -1,4 +1,5 @@
 import { type FC, memo } from "react"
+import { useTranslation } from "react-i18next"
 import { MenuItem, SceneCard, Typography, dclColors } from "decentraland-ui2"
 import positionStar1 from "../../images/Position_Star_Medium_1.webp"
 import positionStar2 from "../../images/Position_Star_Medium_2.webp"
@@ -27,17 +28,24 @@ const getCornerBadgeImage = (index: number): string | undefined => {
 }
 
 export const PreviousWinners: FC = memo(() => {
+  const { t } = useTranslation()
+  const currentMonth = t("previousWinners.months.october")
+
   return (
     <PreviousWinnersContainer>
       <PreviousWinnersHeader>
         <PreviousWinnersTitle>
           <Typography variant="h5" fontWeight={700}>
-            October Winners
+            {t("previousWinners.title", { month: currentMonth })}
           </Typography>
         </PreviousWinnersTitle>
         <MonthSelect defaultValue="october-2025">
-          <MenuItem value="october-2025">OCTOBER 2025</MenuItem>
-          <MenuItem value="november-2025">NOVEMBER 2025</MenuItem>
+          <MenuItem value="october-2025">
+            {`${t("previousWinners.months.october").toUpperCase()} 2025`}
+          </MenuItem>
+          <MenuItem value="november-2025">
+            {`${t("previousWinners.months.november").toUpperCase()} 2025`}
+          </MenuItem>
         </MonthSelect>
       </PreviousWinnersHeader>
       <ScenesGrid>

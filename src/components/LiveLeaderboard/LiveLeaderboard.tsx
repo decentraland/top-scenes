@@ -1,4 +1,5 @@
 import { type FC, memo } from "react"
+import { useTranslation } from "react-i18next"
 import { ScenesTable, dclTable } from "decentraland-ui2"
 import { BestNewScene } from "../BestNewScene"
 import { mockLeaderboardRows } from "./mockData"
@@ -23,19 +24,24 @@ const rankRows: RankRow[] = mockLeaderboardRows.map((_, index) => ({
   borderColor: getBorderColor(index + 1),
 }))
 
-const rankColumns: dclTable.Column<RankRow>[] = [
-  {
-    id: "rank",
-    header: "Rank",
-    cellPadding: 0,
-    render: (row) => <RankCell key={row.key}>{row.rank}</RankCell>,
-  },
-]
-
 export const LiveLeaderboard: FC = memo(() => {
+  const { t } = useTranslation()
+  const currentMonth = t("previousWinners.months.october")
+
+  const rankColumns: dclTable.Column<RankRow>[] = [
+    {
+      id: "rank",
+      header: t("liveLeaderboard.rankHeader"),
+      cellPadding: 0,
+      render: (row) => <RankCell key={row.key}>{row.rank}</RankCell>,
+    },
+  ]
+
   return (
     <LiveLeaderboardContainer id="leaderboard">
-      <LiveLeaderboardTitle>Live October Leaderboard</LiveLeaderboardTitle>
+      <LiveLeaderboardTitle>
+        {t("liveLeaderboard.title", { month: currentMonth })}
+      </LiveLeaderboardTitle>
       <TablesWrapper>
         <RankTableWrapper>
           <dclTable.Table

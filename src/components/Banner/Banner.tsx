@@ -1,4 +1,5 @@
 import { type FC, memo } from "react"
+import { useTranslation } from "react-i18next"
 import bannerBg from "../../images/banner_bg.webp"
 import bannerOverlay from "../../images/banner_overlay.webp"
 import {
@@ -12,22 +13,21 @@ import {
 } from "./Banner.styled"
 
 export const Banner: FC = memo(() => {
+  const { t } = useTranslation()
+
   return (
     <BannerContainer>
-      <BannerImage src={bannerBg} alt="Banner background" />
+      <BannerImage src={bannerBg} alt={t("banner.backgroundAlt")} />
       <BannerOverlay src={bannerOverlay} alt="" />
       <BannerContent>
-        <BannerTitle>Top Scenes Leaderboard</BannerTitle>
-        <BannerDescription>
-          Discover Decentraland&apos;s hottest scenes as they race to the top of
-          the leaderboard each month!
-        </BannerDescription>
+        <BannerTitle>{t("banner.title")}</BannerTitle>
+        <BannerDescription>{t("banner.description")}</BannerDescription>
         <LiveLeaderboardButton
           variant="contained"
           color="secondary"
           href="#leaderboard"
         >
-          ⭐️ Live Leaderboard
+          {t("banner.button")}
         </LiveLeaderboardButton>
       </BannerContent>
     </BannerContainer>
