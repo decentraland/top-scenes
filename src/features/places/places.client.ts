@@ -41,33 +41,39 @@ const placesClient = createApi({
       ) {
         const results: Record<string, Place> = {}
 
-        const placePromises = positions.map(async (position) => {
-          const response = await fetchWithBQ(`/places?positions=${position}`)
+        // Fetch all places in a single request
+        if (positions.length > 0) {
+          const positionsQuery = positions
+            .map((p) => `positions=${p}`)
+            .join("&")
+          const response = await fetchWithBQ(`/places?${positionsQuery}`)
           if (response.data) {
             const data = response.data as PlacesApiResponse
-            if (data.ok && data.data.length > 0) {
-              const place = data.data[0]
-              results[place.base_position] = place
+            if (data.ok) {
+              data.data.forEach((place) => {
+                results[place.base_position] = place
+              })
             }
           }
-        })
+        }
 
-        const worldPromises = worlds.map(async (world) => {
-          const response = await fetchWithBQ(
-            `/worlds?names=${world.toLowerCase()}`
-          )
+        // Fetch all worlds in a single request
+        if (worlds.length > 0) {
+          const worldsQuery = worlds
+            .map((w) => `names=${encodeURIComponent(w.toLowerCase())}`)
+            .join("&")
+          const response = await fetchWithBQ(`/worlds?${worldsQuery}&limit=100`)
           if (response.data) {
             const data = response.data as PlacesApiResponse
-            if (data.ok && data.data.length > 0) {
-              const place = data.data[0]
-              if (place.world_name) {
-                results[place.world_name.toLowerCase()] = place
-              }
+            if (data.ok) {
+              data.data.forEach((place) => {
+                if (place.world_name) {
+                  results[place.world_name.toLowerCase()] = place
+                }
+              })
             }
           }
-        })
-
-        await Promise.all([...placePromises, ...worldPromises])
+        }
 
         return { data: results }
       },
