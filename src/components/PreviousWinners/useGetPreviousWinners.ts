@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { isEns, useGetPlacesAndWorldsQuery } from "../../features/places"
 import { useGetProfilesQuery } from "../../features/profiles"
 import { useGetPreviousMonthRankingQuery } from "../../features/scenes"
@@ -6,6 +6,19 @@ import sceneThumbnail from "../../images/scene-thumbnail.webp"
 import type { Place } from "../../features/places"
 import type { PreviousMonthRanking } from "../../features/scenes"
 import type { Avatar } from "@dcl/schemas"
+
+const preloadImages = (urls: string[]): Promise<void> =>
+  Promise.all(
+    urls.map(
+      (url) =>
+        new Promise<void>((resolve) => {
+          const img = new Image()
+          img.onload = () => resolve()
+          img.onerror = () => resolve()
+          img.src = url
+        })
+    )
+  ).then(() => {})
 
 type SceneCardData = {
   id: string
@@ -101,6 +114,8 @@ const transformToSceneCardData = (
 }
 
 export const useGetPreviousWinners = (selectedPeriod: string) => {
+  const [imagesReadyForPeriod, setImagesReadyForPeriod] = useState("")
+
   const { data: rankingsByPeriod, isLoading: isLoadingRankings } =
     useGetPreviousMonthRankingQuery()
 
@@ -142,16 +157,23 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
     return { positions: positionsList, worlds: worldsList }
   }, [currentRankings])
 
-  const { data: profiles, isLoading: isLoadingProfiles } = useGetProfilesQuery(
+  const {
+    data: profiles,
+    isLoading: isLoadingProfiles,
+    isFetching: isFetchingProfiles,
+  } = useGetProfilesQuery(
     { ids: creatorAddresses },
     { skip: creatorAddresses.length === 0 }
   )
 
-  const { data: places, isLoading: isLoadingPlaces } =
-    useGetPlacesAndWorldsQuery(
-      { positions, worlds },
-      { skip: positions.length === 0 && worlds.length === 0 }
-    )
+  const {
+    data: places,
+    isLoading: isLoadingPlaces,
+    isFetching: isFetchingPlaces,
+  } = useGetPlacesAndWorldsQuery(
+    { positions, worlds },
+    { skip: positions.length === 0 && worlds.length === 0 }
+  )
 
   const scenes = useMemo(() => {
     if (!currentRankings.length) return []
@@ -160,10 +182,26 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
       .map((ranking) => transformToSceneCardData(ranking, profiles, places))
   }, [currentRankings, profiles, places])
 
-  const isLoading = isLoadingRankings || isLoadingProfiles || isLoadingPlaces
+  // Preload images when scenes are ready and period changes
+  useEffect(() => {
+    if (!scenes.length || !selectedPeriod) return
+    if (imagesReadyForPeriod === selectedPeriod) return
+    const imageUrls = [...new Set(scenes.map((s) => s.image))]
+    preloadImages(imageUrls).then(() => setImagesReadyForPeriod(selectedPeriod))
+  }, [scenes, selectedPeriod, imagesReadyForPeriod])
+
+  const apisLoading =
+    isLoadingRankings ||
+    isLoadingProfiles ||
+    isFetchingProfiles ||
+    isLoadingPlaces ||
+    isFetchingPlaces
+
+  const imagesReady = imagesReadyForPeriod === selectedPeriod
+  const isLoading = apisLoading || !imagesReady
 
   return {
-    scenes,
+    scenes: imagesReady ? scenes : [],
     availablePeriods,
     isLoading,
   }

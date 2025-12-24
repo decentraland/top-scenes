@@ -13,6 +13,7 @@ import positionStar1 from "../../images/Position_Star_Medium_1.webp"
 import positionStar2 from "../../images/Position_Star_Medium_2.webp"
 import positionStar3 from "../../images/Position_Star_Medium_3.webp"
 import {
+  LoadingWrapper,
   MonthSelect,
   PreviousWinnersContainer,
   PreviousWinnersHeader,
@@ -57,16 +58,12 @@ export const PreviousWinners: FC = memo(() => {
     `previousWinners.months.${getMonthKey(selectedPeriod)}`
   )
 
-  if (isLoading && scenes.length === 0) {
+  if (isLoading) {
     return (
-      <PreviousWinnersContainer>
-        <PreviousWinnersHeader>
-          <PreviousWinnersTitle>
-            <Typography variant="h5" fontWeight={700}>
-              <CircularProgress />
-            </Typography>
-          </PreviousWinnersTitle>
-        </PreviousWinnersHeader>
+      <PreviousWinnersContainer isLoading>
+        <LoadingWrapper>
+          <CircularProgress />
+        </LoadingWrapper>
       </PreviousWinnersContainer>
     )
   }

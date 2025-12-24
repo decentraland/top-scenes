@@ -5,6 +5,7 @@ import { useGetRanking } from "./useGetRanking"
 import {
   LiveLeaderboardContainer,
   LiveLeaderboardTitle,
+  LoadingWrapper,
   RankCell,
   RankTableWrapper,
   TablesWrapper,
@@ -30,10 +31,9 @@ export const LiveLeaderboard: FC = memo(() => {
 
   if (isLoading) {
     return (
-      <LiveLeaderboardContainer id="leaderboard">
-        <LiveLeaderboardTitle>Live December Leaderboard</LiveLeaderboardTitle>
+      <LoadingWrapper>
         <CircularProgress />
-      </LiveLeaderboardContainer>
+      </LoadingWrapper>
     )
   }
 

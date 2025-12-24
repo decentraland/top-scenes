@@ -81,9 +81,18 @@ const RankCell = styled(Box)(({ theme }) => ({
   },
 }))
 
+const LoadingWrapper = styled(Box)(() => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: "300px",
+  width: "100%",
+}))
+
 export {
   LiveLeaderboardContainer,
   LiveLeaderboardTitle,
+  LoadingWrapper,
   RankCell,
   RankTableWrapper,
   TablesWrapper,
