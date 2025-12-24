@@ -13,7 +13,7 @@ import {
 export const MobileTabs: FC = memo(() => {
   const { t } = useTranslation()
   const location = useLocation()
-  const currentMonth = t("previousWinners.months.october")
+
   const [activeTab, setActiveTab] = useState(() => {
     return location.hash === "#leaderboard" ? 1 : 0
   })
@@ -31,7 +31,7 @@ export const MobileTabs: FC = memo(() => {
   return (
     <MobileTabsContainer id="mobile-tabs">
       <StyledTabs value={activeTab} onChange={handleTabChange}>
-        <StyledTab label={t("mobileTabs.topScenes", { month: currentMonth })} />
+        <StyledTab label={t("mobileTabs.topScenes")} />
         <StyledTab label={t("mobileTabs.liveLeaderboard")} />
       </StyledTabs>
       <TabContent>

@@ -55,6 +55,7 @@ const createPlaceholderAvatar = (address: string, name: string): Avatar => ({
   links: [],
 })
 
+//TODO modify
 const getPlaceThumbnail = (
   locationId: string,
   places?: Record<string, Place>

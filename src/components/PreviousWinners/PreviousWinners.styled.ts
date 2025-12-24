@@ -92,11 +92,14 @@ const ScenesGrid = styled(Box)(({ theme }) => ({
       gridColumn: "span 4",
     },
   },
-  [theme.breakpoints.down("sm")]: {
-    gridTemplateColumns: "repeat(2, 1fr)",
+  [theme.breakpoints.down("xs")]: {
+    gridTemplateColumns: "1fr",
     gap: "12px",
+    justifyItems: "center",
     "& > *": {
       gridColumn: "span 1",
+      maxWidth: "400px",
+      width: "100%",
     },
   },
 }))

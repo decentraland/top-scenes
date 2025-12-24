@@ -41,7 +41,6 @@ const placesClient = createApi({
       ) {
         const results: Record<string, Place> = {}
 
-        // Fetch all places in a single request
         if (positions.length > 0) {
           const positionsQuery = positions
             .map((p) => `positions=${p}`)
@@ -57,7 +56,6 @@ const placesClient = createApi({
           }
         }
 
-        // Fetch all worlds in a single request
         if (worlds.length > 0) {
           const worldsQuery = worlds
             .map((w) => `names=${encodeURIComponent(w.toLowerCase())}`)
