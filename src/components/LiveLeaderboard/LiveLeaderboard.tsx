@@ -1,5 +1,8 @@
-import { type FC, memo } from "react"
+import { type FC, memo, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
+import { ROUTES } from "../../AppRoutes"
+import { scrollToLeaderboard } from "../../utils/scrollUtils"
 import { BestNewScene } from "../BestNewScene"
 import { useGetRanking } from "./useGetRanking"
 import {
@@ -26,40 +29,57 @@ const rankColumns: dclTable.Column<RankRow>[] = [
   },
 ]
 
-export const LiveLeaderboard: FC = memo(() => {
-  const { sceneRows, rankRows, isLoading, isError } = useGetRanking()
+type LiveLeaderboardProps = {
+  scrollOnLoad?: boolean
+}
 
-  if (isLoading) {
-    return (
-      <LoadingWrapper>
-        <CircularProgress />
-      </LoadingWrapper>
-    )
-  }
+export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
+  ({ scrollOnLoad }) => {
+    const navigate = useNavigate()
+    const { sceneRows, rankRows, isLoading, isError } = useGetRanking()
 
-  if (isError) {
+    const isPageReady = !isLoading
+
+    useEffect(() => {
+      if (!scrollOnLoad || !isPageReady) return
+      scrollToLeaderboard()
+      navigate(ROUTES.HOME, { replace: true })
+    }, [scrollOnLoad, isPageReady, navigate])
+
+    if (isLoading) {
+      return (
+        <LiveLeaderboardContainer>
+          <LoadingWrapper>
+            <CircularProgress />
+          </LoadingWrapper>
+        </LiveLeaderboardContainer>
+      )
+    }
+
+    if (isError) {
+      return (
+        <LiveLeaderboardContainer>
+          <LiveLeaderboardTitle>Live December Leaderboard</LiveLeaderboardTitle>
+          <TablesWrapper>Error loading rankings</TablesWrapper>
+        </LiveLeaderboardContainer>
+      )
+    }
+
     return (
       <LiveLeaderboardContainer id="leaderboard">
         <LiveLeaderboardTitle>Live December Leaderboard</LiveLeaderboardTitle>
-        <TablesWrapper>Error loading rankings</TablesWrapper>
+        <TablesWrapper>
+          <RankTableWrapper>
+            <dclTable.Table
+              columns={rankColumns}
+              rows={rankRows}
+              hoverEffect={false}
+            />
+          </RankTableWrapper>
+          <ScenesTable rows={sceneRows} />
+        </TablesWrapper>
+        <BestNewScene />
       </LiveLeaderboardContainer>
     )
   }
-
-  return (
-    <LiveLeaderboardContainer id="leaderboard">
-      <LiveLeaderboardTitle>Live December Leaderboard</LiveLeaderboardTitle>
-      <TablesWrapper>
-        <RankTableWrapper>
-          <dclTable.Table
-            columns={rankColumns}
-            rows={rankRows}
-            hoverEffect={false}
-          />
-        </RankTableWrapper>
-        <ScenesTable rows={sceneRows} />
-      </TablesWrapper>
-      <BestNewScene />
-    </LiveLeaderboardContainer>
-  )
-})
+)

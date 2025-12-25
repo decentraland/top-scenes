@@ -14,7 +14,10 @@ const globalStyles = {
   html: {
     scrollBehavior: "smooth",
   },
-  "#leaderboard, #mobile-tabs": {
+  "#previous-winners": {
+    scrollMarginTop: "120px",
+  },
+  "#leaderboard": {
     scrollMarginTop: "64px",
   },
 }
