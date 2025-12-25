@@ -1,8 +1,13 @@
 import { useEffect, useMemo, useState } from "react"
+import {
+  BEST_NEW_SCENE_RANKING,
+  MAX_RANKING_ROWS,
+} from "../../constants/ranking"
 import { isEns, useGetPlacesAndWorldsQuery } from "../../features/places"
 import { useGetProfilesQuery } from "../../features/profiles"
 import { useGetPreviousMonthRankingQuery } from "../../features/scenes"
 import sceneThumbnail from "../../images/scene-thumbnail.webp"
+import { createPlaceholderAvatar } from "../../utils/avatarUtils"
 import type { Place } from "../../features/places"
 import type { PreviousMonthRanking } from "../../features/scenes"
 import type { Avatar } from "@dcl/schemas"
@@ -27,46 +32,8 @@ type SceneCardData = {
   avatar: Avatar
   coordinates: string
   ranking: number
+  isNew?: boolean
 }
-
-const createPlaceholderAvatar = (address: string, name: string): Avatar => ({
-  hasClaimedName: false,
-  description: "",
-  tutorialStep: 0,
-  name: name || address.slice(0, 8),
-  userId: address,
-  email: "",
-  ethAddress: address,
-  version: 1,
-  avatar: {
-    bodyShape: "urn:decentraland:off-chain:base-avatars:BaseMale",
-    wearables: [],
-    forceRender: [],
-    emotes: [],
-    snapshots: {
-      face256: `https://peer.decentraland.org/lambdas/profile/${address}/face256`,
-      body: `https://peer.decentraland.org/lambdas/profile/${address}/body.png`,
-    },
-    eyes: { color: { r: 0.2, g: 0.5, b: 0.7 } },
-    hair: { color: { r: 0.3, g: 0.2, b: 0.1 } },
-    skin: { color: { r: 0.9, g: 0.7, b: 0.6 } },
-  },
-  blocked: [],
-  interests: [],
-  hasConnectedWeb3: true,
-  country: "",
-  employmentStatus: "",
-  gender: "",
-  pronouns: "",
-  relationshipStatus: "",
-  sexualOrientation: "",
-  language: "",
-  profession: "",
-  realName: "",
-  hobbies: "",
-  birthdate: 0,
-  links: [],
-})
 
 const getPlaceThumbnail = (
   locationId: string,
@@ -162,20 +129,39 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
     { skip: positions.length === 0 && worlds.length === 0 }
   )
 
-  const scenes = useMemo(() => {
-    if (!currentRankings.length) return []
-    return [...currentRankings]
+  const { scenes, bestNewScene } = useMemo(() => {
+    if (!currentRankings.length) return { scenes: [], bestNewScene: null }
+
+    const bestNew = currentRankings.find(
+      (r) => r.ranking === BEST_NEW_SCENE_RANKING
+    )
+    const rankings = currentRankings
+      .filter((r) => r.ranking !== BEST_NEW_SCENE_RANKING)
       .sort((a, b) => a.ranking - b.ranking)
-      .map((ranking) => transformToSceneCardData(ranking, profiles, places))
+      .slice(0, MAX_RANKING_ROWS)
+
+    const sceneCards = rankings.map((ranking) =>
+      transformToSceneCardData(ranking, profiles, places)
+    )
+
+    const bestNewCard = bestNew
+      ? { ...transformToSceneCardData(bestNew, profiles, places), isNew: true }
+      : null
+
+    return { scenes: sceneCards, bestNewScene: bestNewCard }
   }, [currentRankings, profiles, places])
 
   // Preload images when scenes are ready and period changes
   useEffect(() => {
     if (!scenes.length || !selectedPeriod) return
     if (imagesReadyForPeriod === selectedPeriod) return
-    const imageUrls = [...new Set(scenes.map((s) => s.image))]
+
+    const allImages = scenes.map((s) => s.image)
+    if (bestNewScene) allImages.push(bestNewScene.image)
+    const imageUrls = [...new Set(allImages)]
+
     preloadImages(imageUrls).then(() => setImagesReadyForPeriod(selectedPeriod))
-  }, [scenes, selectedPeriod, imagesReadyForPeriod])
+  }, [scenes, bestNewScene, selectedPeriod, imagesReadyForPeriod])
 
   const apisLoading =
     isLoadingRankings ||
@@ -189,6 +175,7 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
 
   return {
     scenes: imagesReady ? scenes : [],
+    bestNewScene: imagesReady ? bestNewScene : null,
     availablePeriods,
     isLoading,
   }

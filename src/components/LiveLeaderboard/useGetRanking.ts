@@ -1,12 +1,13 @@
 import { useMemo } from "react"
 import { transformToSceneRowData } from "./utils"
+import {
+  BEST_NEW_SCENE_RANKING,
+  MAX_RANKING_ROWS,
+} from "../../constants/ranking"
 import { isEns, useGetPlacesAndWorldsQuery } from "../../features/places"
 import { useGetProfilesQuery } from "../../features/profiles"
 import { useGetCurrentMonthRankingQuery } from "../../features/scenes"
 import { getBorderColor } from "../../utils/rankColors"
-
-const MAX_ROWS = 20
-const BEST_NEW_SCENE_RANKING = 999
 
 type RankRow = {
   key: string
@@ -15,7 +16,7 @@ type RankRow = {
 }
 
 const createPositionRows = (length: number): RankRow[] =>
-  Array.from({ length: Math.min(length, MAX_ROWS) }, (_, i) => ({
+  Array.from({ length: Math.min(length, MAX_RANKING_ROWS) }, (_, i) => ({
     key: String(i + 1),
     rank: i + 1,
     borderColor: getBorderColor(i + 1),
@@ -75,7 +76,7 @@ export const useGetRanking = () => {
   const sceneRows = useMemo(() => {
     if (!rankings.length) return []
     return rankings
-      .slice(0, MAX_ROWS)
+      .slice(0, MAX_RANKING_ROWS)
       .map((scene) => transformToSceneRowData(scene, profiles, places))
   }, [rankings, profiles, places])
 

@@ -7,13 +7,11 @@ import {
   SceneCard,
   SelectChangeEvent,
   Typography,
-  dclColors,
 } from "decentraland-ui2"
 import { useGetPreviousWinners } from "./useGetPreviousWinners"
 import { ROUTES } from "../../AppRoutes"
-import positionStar1 from "../../images/Position_Star_Medium_1.webp"
-import positionStar2 from "../../images/Position_Star_Medium_2.webp"
-import positionStar3 from "../../images/Position_Star_Medium_3.webp"
+import { parseMonthParam } from "../../utils/dateUtils"
+import { getBorderColor, getCornerBadgeImage } from "../../utils/rankColors"
 import { scrollToRanking } from "../../utils/scrollUtils"
 import {
   LoadingWrapper,
@@ -23,28 +21,6 @@ import {
   PreviousWinnersTitle,
   ScenesGrid,
 } from "./PreviousWinners.styled"
-
-//TODO move to utils
-const getBorderColor = (index: number): string | undefined => {
-  if (index === 0) return dclColors.gradient.gold
-  if (index === 1) return dclColors.gradient.silver
-  if (index === 2) return dclColors.gradient.bronze
-  return undefined
-}
-
-const getCornerBadgeImage = (index: number): string | undefined => {
-  if (index === 0) return positionStar1
-  if (index === 1) return positionStar2
-  if (index === 2) return positionStar3
-  return undefined
-}
-
-const parseMonthParam = (month: string | undefined): string | null => {
-  if (!month || month.length !== 4) return null
-  const mm = month.slice(0, 2)
-  const yy = month.slice(2, 4)
-  return `${mm}/${yy}`
-}
 
 type PreviousWinnersProps = {
   initialMonth?: string
@@ -57,7 +33,7 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
     const navigate = useNavigate()
     const [selectedPeriod, setSelectedPeriod] = useState("")
 
-    const { scenes, availablePeriods, isLoading } =
+    const { scenes, bestNewScene, availablePeriods, isLoading } =
       useGetPreviousWinners(selectedPeriod)
 
     useEffect(() => {
@@ -123,13 +99,25 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
               sceneName={scene.sceneName}
               avatar={scene.avatar}
               withShadow
-              borderColor={getBorderColor(index)}
-              cornerBadgeImage={getCornerBadgeImage(index)}
+              borderColor={getBorderColor(index + 1)}
+              cornerBadgeImage={getCornerBadgeImage(index + 1)}
               cornerBadge={index >= 3 ? String(index + 1) : undefined}
               coordinates={scene.coordinates}
               showOnHover={["location", "jumpInButton"]}
             />
           ))}
+          {bestNewScene && (
+            <SceneCard
+              key={bestNewScene.id}
+              image={bestNewScene.image}
+              sceneName={bestNewScene.sceneName}
+              avatar={bestNewScene.avatar}
+              withShadow
+              cornerBadge={t("bestNewScene.newBadge")}
+              coordinates={bestNewScene.coordinates}
+              showOnHover={["location", "jumpInButton"]}
+            />
+          )}
         </ScenesGrid>
       </PreviousWinnersContainer>
     )
