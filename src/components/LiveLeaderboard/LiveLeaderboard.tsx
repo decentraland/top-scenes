@@ -1,4 +1,5 @@
-import { type FC, memo, useEffect } from "react"
+import { type FC, memo, useEffect, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
 import { ROUTES } from "../../AppRoutes"
@@ -35,8 +36,15 @@ type LiveLeaderboardProps = {
 
 export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
   ({ scrollOnLoad }) => {
+    const { t } = useTranslation()
     const navigate = useNavigate()
     const { sceneRows, rankRows, isLoading, isError } = useGetRanking()
+
+    const currentMonth = useMemo(() => {
+      const now = new Date()
+      const monthKey = String(now.getUTCMonth() + 1).padStart(2, "0")
+      return t(`previousWinners.months.${monthKey}`)
+    }, [t])
 
     const isPageReady = !isLoading
 
@@ -59,7 +67,9 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
     if (isError) {
       return (
         <LiveLeaderboardContainer>
-          <LiveLeaderboardTitle>Live December Leaderboard</LiveLeaderboardTitle>
+          <LiveLeaderboardTitle>
+            {t("liveLeaderboard.title", { month: currentMonth })}
+          </LiveLeaderboardTitle>
           <TablesWrapper>Error loading rankings</TablesWrapper>
         </LiveLeaderboardContainer>
       )
@@ -67,7 +77,9 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
 
     return (
       <LiveLeaderboardContainer id="leaderboard">
-        <LiveLeaderboardTitle>Live December Leaderboard</LiveLeaderboardTitle>
+        <LiveLeaderboardTitle>
+          {t("liveLeaderboard.title", { month: currentMonth })}
+        </LiveLeaderboardTitle>
         <TablesWrapper>
           <RankTableWrapper>
             <dclTable.Table
