@@ -1,7 +1,6 @@
 import { type FC, memo } from "react"
 import { useTranslation } from "react-i18next"
-import { ScenesTable, dclTable } from "decentraland-ui2"
-import { mockBestNewScene } from "../LiveLeaderboard/mockData"
+import { type SceneRowData, ScenesTable, dclTable } from "decentraland-ui2"
 import {
   BestNewSceneContainer,
   BestNewSceneTitle,
@@ -15,15 +14,19 @@ type NewRow = {
   key: string
 }
 
+type BestNewSceneProps = {
+  sceneRow: SceneRowData
+}
+
 const newRows: NewRow[] = [{ key: "new" }]
 
-export const BestNewScene: FC = memo(() => {
+export const BestNewScene: FC<BestNewSceneProps> = memo(({ sceneRow }) => {
   const { t } = useTranslation()
 
   const newColumns: dclTable.Column<NewRow>[] = [
     {
       id: "new",
-      header: t("bestNewScene.rankHeader"),
+      header: t("liveLeaderboard.rankHeader"),
       cellPadding: 0,
       render: (row) => (
         <NewCell key={row.key}>
@@ -44,7 +47,7 @@ export const BestNewScene: FC = memo(() => {
             hoverEffect={false}
           />
         </NewTableWrapper>
-        <ScenesTable rows={[mockBestNewScene]} />
+        <ScenesTable rows={[sceneRow]} />
       </BestNewSceneWrapper>
     </BestNewSceneContainer>
   )

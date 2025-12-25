@@ -1,4 +1,5 @@
 import { client } from "../../services/client"
+import { normalizeLocationId } from "../../utils/locationUtils"
 import type {
   PreviousMonthRankingByPeriod,
   SceneRanking,
@@ -27,7 +28,7 @@ const scenesClient = client.injectEndpoints({
             lastEventRegisteredAt,
           ]) => ({
             placeName,
-            locationId,
+            locationId: normalizeLocationId(locationId),
             creator,
             contactName,
             ranking,
@@ -51,7 +52,7 @@ const scenesClient = client.injectEndpoints({
             periodDate,
           ]) => ({
             placeName,
-            locationId,
+            locationId: normalizeLocationId(locationId),
             creator,
             contactName,
             ranking,

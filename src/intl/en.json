@@ -24,11 +24,11 @@
   },
   "liveLeaderboard": {
     "title": "Live {{month}} Leaderboard",
+    "error": "Error loading rankings",
     "rankHeader": "Rank"
   },
   "bestNewScene": {
     "title": "Best New Scene",
-    "rankHeader": "Rank",
     "newBadge": "NEW"
   },
   "mobileTabs": {

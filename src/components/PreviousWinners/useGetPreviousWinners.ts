@@ -68,23 +68,18 @@ const createPlaceholderAvatar = (address: string, name: string): Avatar => ({
   links: [],
 })
 
-//TODO modify
 const getPlaceThumbnail = (
   locationId: string,
   places?: Record<string, Place>
 ): string => {
   if (!places) return sceneThumbnail
 
-  const location = locationId.includes("|")
-    ? locationId.replace("|", ",")
-    : locationId
-
-  if (isEns(location)) {
-    const place = places[location.toLowerCase()]
+  if (isEns(locationId)) {
+    const place = places[locationId.toLowerCase()]
     return place?.image || sceneThumbnail
   }
 
-  const place = places[location]
+  const place = places[locationId]
   return place?.image || sceneThumbnail
 }
 
@@ -99,16 +94,12 @@ const transformToSceneCardData = (
   const avatar =
     profile || createPlaceholderAvatar(ranking.creator, ranking.contactName)
 
-  const coordinates = ranking.locationId.includes("|")
-    ? ranking.locationId.replace("|", ",")
-    : ranking.locationId
-
   return {
     id: `${ranking.locationId}-${ranking.ranking}`,
     image: getPlaceThumbnail(ranking.locationId, places),
     sceneName: ranking.placeName,
     avatar,
-    coordinates,
+    coordinates: ranking.locationId,
     ranking: ranking.ranking,
   }
 }
@@ -143,14 +134,10 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
     const worldsList: string[] = []
 
     currentRankings.forEach((scene) => {
-      const locationId = scene.locationId.includes("|")
-        ? scene.locationId.replace("|", ",")
-        : scene.locationId
-
-      if (isEns(locationId)) {
-        worldsList.push(locationId)
+      if (isEns(scene.locationId)) {
+        worldsList.push(scene.locationId)
       } else {
-        positionsList.push(locationId)
+        positionsList.push(scene.locationId)
       }
     })
 

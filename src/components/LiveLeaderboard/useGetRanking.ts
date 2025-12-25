@@ -6,6 +6,7 @@ import { useGetCurrentMonthRankingQuery } from "../../features/scenes"
 import { getBorderColor } from "../../utils/rankColors"
 
 const MAX_ROWS = 20
+const BEST_NEW_SCENE_RANKING = 999
 
 type RankRow = {
   key: string
@@ -13,7 +14,7 @@ type RankRow = {
   borderColor?: string
 }
 
-const createRankRows = (length: number): RankRow[] =>
+const createPositionRows = (length: number): RankRow[] =>
   Array.from({ length: Math.min(length, MAX_ROWS) }, (_, i) => ({
     key: String(i + 1),
     rank: i + 1,
@@ -22,36 +23,43 @@ const createRankRows = (length: number): RankRow[] =>
 
 export const useGetRanking = () => {
   const {
-    data: rankings,
+    data,
     isLoading: isLoadingRankings,
     isError: isErrorRankings,
   } = useGetCurrentMonthRankingQuery()
 
+  const { rankings, bestNewSceneRanking } = useMemo(() => {
+    if (!data) return { rankings: [], bestNewSceneRanking: null }
+
+    const bestNew = data.find(
+      (r) => r.ranking === BEST_NEW_SCENE_RANKING && r.placeName !== "None"
+    )
+    const rankings = data.filter((r) => r.ranking !== BEST_NEW_SCENE_RANKING)
+
+    return { rankings, bestNewSceneRanking: bestNew || null }
+  }, [data])
+
   const creatorAddresses = useMemo(() => {
-    if (!rankings) return []
-    return [...new Set(rankings.map((scene) => scene.creator.toLowerCase()))]
-  }, [rankings])
+    if (!data) return []
+    return [...new Set(data.map((scene) => scene.creator.toLowerCase()))]
+  }, [data])
 
   const { positions, worlds } = useMemo(() => {
-    if (!rankings) return { positions: [], worlds: [] }
+    if (!data) return { positions: [], worlds: [] }
 
     const positionsList: string[] = []
     const worldsList: string[] = []
 
-    rankings.slice(0, MAX_ROWS).forEach((scene) => {
-      const locationId = scene.locationId.includes("|")
-        ? scene.locationId.replace("|", ",")
-        : scene.locationId
-
-      if (isEns(locationId)) {
-        worldsList.push(locationId)
+    data.forEach((scene) => {
+      if (isEns(scene.locationId)) {
+        worldsList.push(scene.locationId)
       } else {
-        positionsList.push(locationId)
+        positionsList.push(scene.locationId)
       }
     })
 
     return { positions: positionsList, worlds: worldsList }
-  }, [rankings])
+  }, [data])
 
   const { data: profiles, isLoading: isLoadingProfiles } = useGetProfilesQuery(
     { ids: creatorAddresses },
@@ -65,14 +73,19 @@ export const useGetRanking = () => {
     )
 
   const sceneRows = useMemo(() => {
-    if (!rankings) return []
+    if (!rankings.length) return []
     return rankings
       .slice(0, MAX_ROWS)
       .map((scene) => transformToSceneRowData(scene, profiles, places))
   }, [rankings, profiles, places])
 
-  const rankRows = useMemo(
-    () => createRankRows(sceneRows.length),
+  const bestNewScene = useMemo(() => {
+    if (!bestNewSceneRanking) return null
+    return transformToSceneRowData(bestNewSceneRanking, profiles, places)
+  }, [bestNewSceneRanking, profiles, places])
+
+  const positionRows = useMemo(
+    () => createPositionRows(sceneRows.length),
     [sceneRows.length]
   )
 
@@ -80,7 +93,8 @@ export const useGetRanking = () => {
 
   return {
     sceneRows,
-    rankRows,
+    positionRows,
+    bestNewScene,
     isLoading,
     isError: isErrorRankings,
   }

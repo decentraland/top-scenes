@@ -38,7 +38,8 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
   ({ scrollOnLoad }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const { sceneRows, rankRows, isLoading, isError } = useGetRanking()
+    const { sceneRows, positionRows, bestNewScene, isLoading, isError } =
+      useGetRanking()
 
     const currentMonth = useMemo(() => {
       const now = new Date()
@@ -70,7 +71,7 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
           <LiveLeaderboardTitle>
             {t("liveLeaderboard.title", { month: currentMonth })}
           </LiveLeaderboardTitle>
-          <TablesWrapper>Error loading rankings</TablesWrapper>
+          <TablesWrapper>{t("liveLeaderboard.error")}</TablesWrapper>
         </LiveLeaderboardContainer>
       )
     }
@@ -84,13 +85,13 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
           <RankTableWrapper>
             <dclTable.Table
               columns={rankColumns}
-              rows={rankRows}
+              rows={positionRows}
               hoverEffect={false}
             />
           </RankTableWrapper>
           <ScenesTable rows={sceneRows} />
         </TablesWrapper>
-        <BestNewScene />
+        {bestNewScene && <BestNewScene sceneRow={bestNewScene} />}
       </LiveLeaderboardContainer>
     )
   }

@@ -51,16 +51,12 @@ const getPlaceThumbnail = (
 ): string => {
   if (!places) return sceneThumbnail
 
-  const location = locationId.includes("|")
-    ? locationId.replace("|", ",")
-    : locationId
-
-  if (isEns(location)) {
-    const place = places[location.toLowerCase()]
+  if (isEns(locationId)) {
+    const place = places[locationId.toLowerCase()]
     return place?.image || sceneThumbnail
   }
 
-  const place = places[location]
+  const place = places[locationId]
   return place?.image || sceneThumbnail
 }
 
@@ -75,10 +71,6 @@ export const transformToSceneRowData = (
   const finalAvatar =
     avatar || createPlaceholderAvatar(scene.creator, scene.contactName)
 
-  const location = scene.locationId.includes("|")
-    ? scene.locationId.replace("|", ",")
-    : scene.locationId
-
   const thumbnail = getPlaceThumbnail(scene.locationId, places)
 
   return {
@@ -86,7 +78,7 @@ export const transformToSceneRowData = (
     sceneName: scene.placeName,
     thumbnail,
     creator: finalAvatar,
-    location,
+    location: scene.locationId,
     positionChange: 0,
     borderColor: getBorderColor(scene.ranking),
   }
