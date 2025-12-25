@@ -1,4 +1,4 @@
-import { client } from "../../services/client"
+import { scenesClient } from "../../services/client"
 import { normalizeLocationId } from "../../utils/locationUtils"
 import type {
   PreviousMonthRankingByPeriod,
@@ -13,7 +13,7 @@ const formatPeriod = (periodDate: string): string => {
   return `${month}/${year}`
 }
 
-const scenesClient = client.injectEndpoints({
+const scenesApi = scenesClient.injectEndpoints({
   endpoints: (build) => ({
     getCurrentMonthRanking: build.query<SceneRanking[], void>({
       query: () => "/current/scene-ranking-current-month.json",
@@ -76,10 +76,10 @@ const scenesClient = client.injectEndpoints({
 })
 
 const { useGetCurrentMonthRankingQuery, useGetPreviousMonthRankingQuery } =
-  scenesClient
+  scenesApi
 
 export {
-  scenesClient,
+  scenesApi,
   useGetCurrentMonthRankingQuery,
   useGetPreviousMonthRankingQuery,
 }

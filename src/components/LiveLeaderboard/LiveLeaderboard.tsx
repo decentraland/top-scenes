@@ -1,8 +1,9 @@
-import { type FC, memo, useEffect, useMemo } from "react"
+import { type FC, memo, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
 import { ROUTES } from "../../AppRoutes"
+import { getCurrentMonthKey } from "../../utils/dateUtils"
 import { scrollToLeaderboard } from "../../utils/scrollUtils"
 import { BestNewScene } from "../BestNewScene"
 import { useGetRanking } from "./useGetRanking"
@@ -41,19 +42,13 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
     const { sceneRows, positionRows, bestNewScene, isLoading, isError } =
       useGetRanking()
 
-    const currentMonth = useMemo(() => {
-      const now = new Date()
-      const monthKey = String(now.getUTCMonth() + 1).padStart(2, "0")
-      return t(`previousWinners.months.${monthKey}`)
-    }, [t])
-
-    const isPageReady = !isLoading
+    const currentMonth = t(`previousWinners.months.${getCurrentMonthKey()}`)
 
     useEffect(() => {
-      if (!scrollOnLoad || !isPageReady) return
+      if (!scrollOnLoad || isLoading) return
       scrollToLeaderboard()
       navigate(ROUTES.HOME, { replace: true })
-    }, [scrollOnLoad, isPageReady, navigate])
+    }, [scrollOnLoad, isLoading, navigate])
 
     if (isLoading) {
       return (

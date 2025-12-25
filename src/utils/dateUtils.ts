@@ -5,4 +5,9 @@ const parseMonthParam = (month: string | undefined): string | null => {
   return `${mm}/${yy}`
 }
 
-export { parseMonthParam }
+const getCurrentMonthKey = (): string => {
+  const now = new Date()
+  return String(now.getUTCMonth() + 1).padStart(2, "0")
+}
+
+export { getCurrentMonthKey, parseMonthParam }

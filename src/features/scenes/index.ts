@@ -1,5 +1,5 @@
 export {
-  scenesClient,
+  scenesApi,
   useGetCurrentMonthRankingQuery,
   useGetPreviousMonthRankingQuery,
 } from "./scenes.client"
