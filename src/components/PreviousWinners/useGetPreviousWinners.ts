@@ -8,6 +8,7 @@ import { useGetProfilesQuery } from "../../features/profiles"
 import { useGetPreviousMonthRankingQuery } from "../../features/scenes"
 import sceneThumbnail from "../../images/scene-thumbnail.webp"
 import { createPlaceholderAvatar } from "../../utils/avatarUtils"
+import { isValidPosition } from "../../utils/locationUtils"
 import type { Place } from "../../features/places"
 import type { PreviousMonthRanking } from "../../features/scenes"
 import type { Avatar } from "@dcl/schemas"
@@ -101,10 +102,12 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
     const worldsList: string[] = []
 
     currentRankings.forEach((scene) => {
-      if (isEns(scene.locationId)) {
-        worldsList.push(scene.locationId)
-      } else {
-        positionsList.push(scene.locationId)
+      const locationId = scene.locationId
+
+      if (isEns(locationId)) {
+        worldsList.push(locationId)
+      } else if (isValidPosition(locationId)) {
+        positionsList.push(locationId)
       }
     })
 

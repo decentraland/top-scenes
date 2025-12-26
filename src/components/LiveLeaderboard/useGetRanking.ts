@@ -7,6 +7,7 @@ import {
 import { isEns, useGetPlacesAndWorldsQuery } from "../../features/places"
 import { useGetProfilesQuery } from "../../features/profiles"
 import { useGetCurrentMonthRankingQuery } from "../../features/scenes"
+import { isValidPosition } from "../../utils/locationUtils"
 import { getBorderColor } from "../../utils/rankColors"
 
 type RankRow = {
@@ -52,10 +53,12 @@ export const useGetRanking = () => {
     const worldsList: string[] = []
 
     data.forEach((scene) => {
-      if (isEns(scene.locationId)) {
-        worldsList.push(scene.locationId)
-      } else {
-        positionsList.push(scene.locationId)
+      const locationId = scene.locationId
+
+      if (isEns(locationId)) {
+        worldsList.push(locationId)
+      } else if (isValidPosition(locationId)) {
+        positionsList.push(locationId)
       }
     })
 
