@@ -5,7 +5,7 @@ type SceneRankingResponse = {
   dimensions: string[]
   dimension_display_names: string[]
   dimension_descriptions: string[]
-  values: [string, string, string, string, number, string][]
+  values: [string, string, string, string, number, string, number][]
 }
 
 type SceneRanking = {
@@ -15,6 +15,7 @@ type SceneRanking = {
   contactName: string
   ranking: number
   lastEventRegisteredAt: string
+  positionChange: number
 }
 
 type PreviousMonthRanking = {

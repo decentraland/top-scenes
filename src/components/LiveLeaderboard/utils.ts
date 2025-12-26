@@ -41,7 +41,7 @@ export const transformToSceneRowData = (
     thumbnail,
     creator: finalAvatar,
     location: scene.locationId,
-    positionChange: 0,
+    positionChange: scene.positionChange ?? null,
     borderColor: getBorderColor(scene.ranking),
   }
 }

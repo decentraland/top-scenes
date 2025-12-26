@@ -26,6 +26,7 @@ const scenesApi = scenesClient.injectEndpoints({
             contactName,
             ranking,
             lastEventRegisteredAt,
+            previousRanking,
           ]) => ({
             placeName,
             locationId: normalizeLocationId(locationId),
@@ -33,6 +34,7 @@ const scenesApi = scenesClient.injectEndpoints({
             contactName,
             ranking,
             lastEventRegisteredAt,
+            positionChange: previousRanking - ranking,
           })
         ),
       providesTags: ["SceneRanking"],
