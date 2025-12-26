@@ -134,7 +134,7 @@ const ScenesGrid = styled(Box)(({ theme }) => ({
   },
   [theme.breakpoints.down("xs")]: {
     gridTemplateColumns: "1fr",
-    gap: "12px",
+    gap: theme.spacing(2.5),
     justifyItems: "center",
     "& > *": {
       gridColumn: "span 1",

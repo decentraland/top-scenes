@@ -6,7 +6,7 @@
     "backgroundAlt": "Banner background"
   },
   "previousWinners": {
-    "title": "{{month}} Winners",
+    "title": "{{month}} Top Scenes",
     "months": {
       "01": "January",
       "02": "February",
