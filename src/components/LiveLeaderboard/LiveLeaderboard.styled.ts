@@ -62,7 +62,7 @@ const RankTableWrapper = styled(Box)(({ theme }) => ({
   maxWidth: theme.spacing(11),
   flexShrink: 0,
   "& .MuiTableContainer-root": {
-    padding: theme.spacing(0, 0, 0, 2),
+    padding: theme.spacing(0, 0, 0, 1),
   },
   [theme.breakpoints.down("sm")]: {
     maxWidth: "64px",

@@ -29,7 +29,8 @@
   },
   "bestNewScene": {
     "title": "Best New Scene",
-    "newBadge": "NEW"
+    "newBadge": "NEW",
+    "badgeText": "BEST NEW"
   },
   "mobileTabs": {
     "topScenes": "Top Scenes",

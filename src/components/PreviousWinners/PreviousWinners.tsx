@@ -11,8 +11,9 @@ import {
 import { useGetPreviousWinners } from "./useGetPreviousWinners"
 import { ROUTES } from "../../AppRoutes"
 import { parseMonthParam } from "../../utils/dateUtils"
-import { getBorderColor, getCornerBadgeImage } from "../../utils/rankColors"
+import { getBorderColor } from "../../utils/rankColors"
 import { scrollToRanking } from "../../utils/scrollUtils"
+import { RankingBadge } from "../RankingBadge"
 import {
   LoadingWrapper,
   MonthSelect,
@@ -100,8 +101,7 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
               avatar={scene.avatar}
               withShadow
               borderColor={getBorderColor(index + 1)}
-              cornerBadgeImage={getCornerBadgeImage(index + 1)}
-              cornerBadge={index >= 3 ? String(index + 1) : undefined}
+              cornerBadge={<RankingBadge rank={index + 1} />}
               coordinates={scene.coordinates}
               showOnHover={["location", "jumpInButton"]}
             />
@@ -113,7 +113,7 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
               sceneName={bestNewScene.sceneName}
               avatar={bestNewScene.avatar}
               withShadow
-              cornerBadge={t("bestNewScene.newBadge")}
+              cornerBadge={<RankingBadge rank={0} isNew />}
               coordinates={bestNewScene.coordinates}
               showOnHover={["location", "jumpInButton"]}
             />
