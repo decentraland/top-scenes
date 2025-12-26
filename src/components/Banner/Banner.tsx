@@ -2,6 +2,7 @@ import { type FC, memo } from "react"
 import { useTranslation } from "react-i18next"
 import bannerBg from "../../images/banner_bg.webp"
 import bannerOverlay from "../../images/banner_overlay.webp"
+import { scrollToLeaderboard } from "../../utils/scrollUtils"
 import {
   BannerContainer,
   BannerContent,
@@ -25,7 +26,7 @@ export const Banner: FC = memo(() => {
         <LiveLeaderboardButton
           variant="contained"
           color="secondary"
-          href="#leaderboard"
+          onClick={scrollToLeaderboard}
         >
           {t("banner.button")}
         </LiveLeaderboardButton>

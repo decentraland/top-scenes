@@ -6,33 +6,34 @@
     "backgroundAlt": "Banner background"
   },
   "previousWinners": {
-    "title": "{{month}} Winners",
+    "title": "{{month}} Top Scenes",
     "months": {
-      "january": "January",
-      "february": "February",
-      "march": "March",
-      "april": "April",
-      "may": "May",
-      "june": "June",
-      "july": "July",
-      "august": "August",
-      "september": "September",
-      "october": "October",
-      "november": "November",
-      "december": "December"
+      "01": "January",
+      "02": "February",
+      "03": "March",
+      "04": "April",
+      "05": "May",
+      "06": "June",
+      "07": "July",
+      "08": "August",
+      "09": "September",
+      "10": "October",
+      "11": "November",
+      "12": "December"
     }
   },
   "liveLeaderboard": {
     "title": "Live {{month}} Leaderboard",
+    "error": "Error loading rankings",
     "rankHeader": "Rank"
   },
   "bestNewScene": {
     "title": "Best New Scene",
-    "rankHeader": "Rank",
-    "newBadge": "NEW"
+    "newBadge": "NEW",
+    "badgeText": "BEST NEW"
   },
   "mobileTabs": {
-    "topScenes": "{{month}}'s Top Scenes",
+    "topScenes": "Top Scenes",
     "liveLeaderboard": "Live Leaderboard"
   }
 }

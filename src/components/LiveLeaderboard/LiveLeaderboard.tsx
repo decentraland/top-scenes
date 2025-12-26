@@ -1,12 +1,16 @@
-import { type FC, memo } from "react"
+import { type FC, memo, useEffect } from "react"
 import { useTranslation } from "react-i18next"
-import { ScenesTable, dclTable } from "decentraland-ui2"
+import { useNavigate } from "react-router-dom"
+import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
+import { ROUTES } from "../../AppRoutes"
+import { getCurrentMonthKey } from "../../utils/dateUtils"
+import { scrollToLeaderboard } from "../../utils/scrollUtils"
 import { BestNewScene } from "../BestNewScene"
-import { mockLeaderboardRows } from "./mockData"
-import { getBorderColor } from "../../utils/rankColors"
+import { useGetRanking } from "./useGetRanking"
 import {
   LiveLeaderboardContainer,
   LiveLeaderboardTitle,
+  LoadingWrapper,
   RankCell,
   RankTableWrapper,
   TablesWrapper,
@@ -18,41 +22,72 @@ type RankRow = {
   borderColor?: string
 }
 
-const rankRows: RankRow[] = mockLeaderboardRows.map((_, index) => ({
-  key: String(index + 1),
-  rank: index + 1,
-  borderColor: getBorderColor(index + 1),
-}))
+const rankColumns: dclTable.Column<RankRow>[] = [
+  {
+    id: "rank",
+    header: "Rank",
+    cellPadding: 0,
+    render: (row) => <RankCell key={row.key}>{row.rank}</RankCell>,
+  },
+]
 
-export const LiveLeaderboard: FC = memo(() => {
-  const { t } = useTranslation()
-  const currentMonth = t("previousWinners.months.october")
+type LiveLeaderboardProps = {
+  scrollOnLoad?: boolean
+}
 
-  const rankColumns: dclTable.Column<RankRow>[] = [
-    {
-      id: "rank",
-      header: t("liveLeaderboard.rankHeader"),
-      cellPadding: 0,
-      render: (row) => <RankCell key={row.key}>{row.rank}</RankCell>,
-    },
-  ]
+export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
+  ({ scrollOnLoad }) => {
+    const { t } = useTranslation()
+    const navigate = useNavigate()
+    const { sceneRows, positionRows, bestNewScene, isLoading, isError } =
+      useGetRanking()
 
-  return (
-    <LiveLeaderboardContainer id="leaderboard">
-      <LiveLeaderboardTitle>
-        {t("liveLeaderboard.title", { month: currentMonth })}
-      </LiveLeaderboardTitle>
-      <TablesWrapper>
-        <RankTableWrapper>
-          <dclTable.Table
-            columns={rankColumns}
-            rows={rankRows}
-            hoverEffect={false}
-          />
-        </RankTableWrapper>
-        <ScenesTable rows={mockLeaderboardRows} />
-      </TablesWrapper>
-      <BestNewScene />
-    </LiveLeaderboardContainer>
-  )
-})
+    const currentMonth = t(`previousWinners.months.${getCurrentMonthKey()}`)
+
+    useEffect(() => {
+      if (!scrollOnLoad || isLoading) return
+      scrollToLeaderboard()
+      navigate(ROUTES.HOME, { replace: true })
+    }, [scrollOnLoad, isLoading, navigate])
+
+    if (isLoading) {
+      return (
+        <LiveLeaderboardContainer>
+          <LoadingWrapper>
+            <CircularProgress />
+          </LoadingWrapper>
+        </LiveLeaderboardContainer>
+      )
+    }
+
+    if (isError) {
+      return (
+        <LiveLeaderboardContainer>
+          <LiveLeaderboardTitle>
+            {t("liveLeaderboard.title", { month: currentMonth })}
+          </LiveLeaderboardTitle>
+          <TablesWrapper>{t("liveLeaderboard.error")}</TablesWrapper>
+        </LiveLeaderboardContainer>
+      )
+    }
+
+    return (
+      <LiveLeaderboardContainer id="leaderboard">
+        <LiveLeaderboardTitle>
+          {t("liveLeaderboard.title", { month: currentMonth })}
+        </LiveLeaderboardTitle>
+        <TablesWrapper>
+          <RankTableWrapper>
+            <dclTable.Table
+              columns={rankColumns}
+              rows={positionRows}
+              hoverEffect={false}
+            />
+          </RankTableWrapper>
+          <ScenesTable rows={sceneRows} />
+        </TablesWrapper>
+        {bestNewScene && <BestNewScene sceneRow={bestNewScene} />}
+      </LiveLeaderboardContainer>
+    )
+  }
+)

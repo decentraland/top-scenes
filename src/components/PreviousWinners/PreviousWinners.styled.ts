@@ -1,30 +1,69 @@
-import { Box, Select, styled } from "decentraland-ui2"
+import { Box, Select, keyframes, styled } from "decentraland-ui2"
 
-const PreviousWinnersContainer = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(4),
-  background: "radial-gradient(circle, #A042CD 0%, #140323 100%)",
-  borderRadius: theme.spacing(5),
-  display: "flex",
-  flexDirection: "column",
-  position: "relative",
-  top: "-90px",
-  alignItems: "center",
-  width: "100%",
-  maxWidth: "1920px",
-  justifyContent: "space-between",
-  boxSizing: "border-box",
-  [theme.breakpoints.down("sm")]: {
-    borderRadius: 0,
-    padding: theme.spacing(2),
-    top: 0,
+const fadeIn = keyframes({
+  from: {
+    opacity: 0,
+    transform: "translateY(12px)",
   },
-}))
+  to: {
+    opacity: 1,
+    transform: "translateY(0)",
+  },
+})
+
+const gradientPulse = keyframes({
+  "0%": {
+    backgroundPosition: "0% 50%",
+  },
+  "50%": {
+    backgroundPosition: "100% 50%",
+  },
+  "100%": {
+    backgroundPosition: "0% 50%",
+  },
+})
+
+const PreviousWinnersContainer = styled(Box)<{ isLoading?: boolean }>(
+  ({ theme, isLoading }) => ({
+    padding: theme.spacing(4),
+    background: isLoading
+      ? "linear-gradient(270deg, #A042CD, #140323, #6B1F9A, #140323, #A042CD)"
+      : "radial-gradient(circle, #A042CD 0%, #140323 100%)",
+    backgroundSize: isLoading ? "400% 400%" : "100% 100%",
+    animation: isLoading ? `${gradientPulse} 3s ease infinite` : "none",
+    borderRadius: theme.spacing(5),
+    display: "flex",
+    flexDirection: "column",
+    position: "relative",
+    top: "-90px",
+    alignItems: "center",
+    width: "100%",
+    maxWidth: "1920px",
+    minHeight: isLoading ? "400px" : undefined,
+    justifyContent: "space-between",
+    boxSizing: "border-box",
+    transition: "background 0.5s ease",
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: 0,
+      padding: theme.spacing(2),
+      top: 0,
+      minHeight: isLoading ? "300px" : undefined,
+    },
+    [theme.breakpoints.down("xs")]: {
+      background: isLoading ? "transparent" : undefined,
+      animation: "none",
+      padding: isLoading ? 0 : theme.spacing(2),
+      minHeight: isLoading ? "300px" : undefined,
+    },
+  })
+)
 
 const PreviousWinnersHeader = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
   width: "100%",
+  animation: `${fadeIn} 0.4s ease-out`,
   [theme.breakpoints.down("xs")]: {
     justifyContent: "flex-end",
   },
@@ -80,6 +119,7 @@ const ScenesGrid = styled(Box)(({ theme }) => ({
   gap: theme.spacing(4),
   width: "100%",
   marginTop: theme.spacing(4),
+  animation: `${fadeIn} 0.4s ease-out`,
   "& > *": {
     minWidth: 0,
     gridColumn: "span 4",
@@ -92,15 +132,31 @@ const ScenesGrid = styled(Box)(({ theme }) => ({
       gridColumn: "span 4",
     },
   },
-  [theme.breakpoints.down("sm")]: {
-    gridTemplateColumns: "repeat(2, 1fr)",
+  [theme.breakpoints.down("xs")]: {
+    gridTemplateColumns: "1fr",
+    gap: theme.spacing(2.5),
+    justifyItems: "center",
     "& > *": {
       gridColumn: "span 1",
+      maxWidth: "400px",
+      width: "100%",
     },
   },
 }))
 
+const LoadingWrapper = styled(Box)(({ theme }) => ({
+  display: "none",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: "300px",
+  width: "100%",
+  [theme.breakpoints.down("xs")]: {
+    display: "flex",
+  },
+}))
+
 export {
+  LoadingWrapper,
   MonthSelect,
   PreviousWinnersContainer,
   PreviousWinnersHeader,

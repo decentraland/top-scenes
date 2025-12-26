@@ -29,10 +29,10 @@ const StyledTab = styled(Tab)(({ theme }) => ({
   textTransform: "uppercase",
   color: theme.palette.text.secondary,
   padding: theme.spacing(2),
-  backgroundColor: "rgba(0, 0, 0, 0.4)",
+  backgroundColor: "transparent",
   "&.Mui-selected": {
     color: theme.palette.text.primary,
-    backgroundColor: "transparent",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
   },
 }))
 

@@ -37,16 +37,35 @@ const TablesWrapper = styled(Box)(({ theme }) => ({
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
   },
+  "& .MuiTableCell-root img": {
+    width: "100px",
+    minWidth: "100",
+    maxWidth: "100x",
+  },
+  [theme.breakpoints.down("sm")]: {
+    "& .MuiTableCell-root img": {
+      width: "70px",
+      minWidth: "70px",
+      maxWidth: "70px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      "& .MuiTableCell-root img": {
+        width: "50px",
+        minWidth: "50px",
+        maxWidth: "50px",
+      },
+    },
+  },
 }))
 
 const RankTableWrapper = styled(Box)(({ theme }) => ({
   maxWidth: theme.spacing(11),
   flexShrink: 0,
   "& .MuiTableContainer-root": {
-    padding: theme.spacing(0, 0, 0, 2),
+    padding: theme.spacing(0, 0, 0, 1),
   },
   [theme.breakpoints.down("sm")]: {
-    maxWidth: theme.spacing(10),
+    maxWidth: "64px",
   },
 }))
 
@@ -62,9 +81,18 @@ const RankCell = styled(Box)(({ theme }) => ({
   },
 }))
 
+const LoadingWrapper = styled(Box)(() => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  minHeight: "300px",
+  width: "100%",
+}))
+
 export {
   LiveLeaderboardContainer,
   LiveLeaderboardTitle,
+  LoadingWrapper,
   RankCell,
   RankTableWrapper,
   TablesWrapper,
