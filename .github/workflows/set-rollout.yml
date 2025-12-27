@@ -24,7 +24,7 @@ jobs:
           packageVersion: ${{ github.event.deployment.payload.packageVersion }}
 
           # Rollout information
-          deploymentPath: 'top-scenes-site'
+          deploymentPath: 'top-scenes'
           deploymentEnvironment: 'zone'
           deploymentName: '_site'
           percentage: 100
