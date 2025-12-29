@@ -22,13 +22,17 @@ const globalStyles = {
   },
 }
 
+const basename = /^decentraland.(zone|org|today)$/.test(window.location.host)
+  ? "/top-scenes"
+  : "/"
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
       <AnalyticsProvider writeKey="">
         <DclThemeProvider theme={darkTheme}>
           <GlobalStyles styles={globalStyles} />
-          <BrowserRouter>
+          <BrowserRouter basename={basename}>
             <AuthProvider config={authConfig}>
               <App />
             </AuthProvider>
