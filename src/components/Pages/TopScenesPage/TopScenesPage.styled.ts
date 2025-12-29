@@ -24,4 +24,9 @@ const ContentWrapper = styled(Box)(({ theme }) => ({
   },
 }))
 
-export { ContentWrapper, PageContainer }
+const FooterWrapper = styled(Box)(() => ({
+  width: "100%",
+  marginTop: "auto",
+}))
+
+export { ContentWrapper, FooterWrapper, PageContainer }

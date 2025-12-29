@@ -144,6 +144,13 @@ const ScenesGrid = styled(Box)(({ theme }) => ({
   },
 }))
 
+const ClickableSceneWrapper = styled(Box)(({ theme }) => ({
+  cursor: "default",
+  [theme.breakpoints.down("sm")]: {
+    cursor: "pointer",
+  },
+}))
+
 const LoadingWrapper = styled(Box)(({ theme }) => ({
   display: "none",
   alignItems: "center",
@@ -156,6 +163,7 @@ const LoadingWrapper = styled(Box)(({ theme }) => ({
 }))
 
 export {
+  ClickableSceneWrapper,
   LoadingWrapper,
   MonthSelect,
   PreviousWinnersContainer,

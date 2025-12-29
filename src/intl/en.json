@@ -25,7 +25,12 @@
   "liveLeaderboard": {
     "title": "Live {{month}} Leaderboard",
     "error": "Error loading rankings",
-    "rankHeader": "Rank"
+    "rankHeader": "Rank",
+    "countdown": {
+      "title": "{{month}} Leaderboard has kicked off!",
+      "description": "Build and refine your scene to boost your chances.",
+      "subtitle": "The live ranking will appear on {{month}} {{day}}th."
+    }
   },
   "bestNewScene": {
     "title": "Best New Scene",
