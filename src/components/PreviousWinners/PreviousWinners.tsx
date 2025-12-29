@@ -7,11 +7,10 @@ import {
   SceneCard,
   SelectChangeEvent,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "decentraland-ui2"
 import { useGetPreviousWinners } from "./useGetPreviousWinners"
 import { ROUTES } from "../../AppRoutes"
+import { useIsMobile } from "../../hooks/useIsMobile"
 import { parseMonthParam } from "../../utils/dateUtils"
 import { openJumpIn } from "../../utils/jumpUtils"
 import { getBorderColor } from "../../utils/rankColors"
@@ -36,8 +35,7 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
   ({ initialMonth, scrollOnLoad }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
+    const isMobile = useIsMobile()
     const [selectedPeriod, setSelectedPeriod] = useState("")
 
     const { scenes, bestNewScene, availablePeriods, isLoading } =

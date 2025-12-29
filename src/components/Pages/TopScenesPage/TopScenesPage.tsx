@@ -1,17 +1,12 @@
 import { type FC, memo } from "react"
 import { useLocation, useParams } from "react-router-dom"
 import { usePageTracking } from "@dcl/hooks"
-import { FooterLanding } from "decentraland-ui2"
 import { ROUTES } from "../../../AppRoutes"
 import { Banner } from "../../Banner"
 import { LiveLeaderboard } from "../../LiveLeaderboard"
 import { MobileTabs } from "../../MobileTabs"
 import { PreviousWinners } from "../../PreviousWinners"
-import {
-  ContentWrapper,
-  FooterWrapper,
-  PageContainer,
-} from "./TopScenesPage.styled"
+import { ContentWrapper, PageContainer } from "./TopScenesPage.styled"
 
 export const TopScenesPage: FC = memo(() => {
   const { pathname } = useLocation()
@@ -32,9 +27,6 @@ export const TopScenesPage: FC = memo(() => {
         <LiveLeaderboard scrollOnLoad={isLeaderboardRoute} />
       </ContentWrapper>
       <MobileTabs initialMonth={month} isLeaderboard={isLeaderboardRoute} />
-      <FooterWrapper>
-        <FooterLanding />
-      </FooterWrapper>
     </PageContainer>
   )
 })

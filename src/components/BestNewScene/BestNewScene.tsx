@@ -1,4 +1,4 @@
-import { type FC, memo } from "react"
+import { type FC, memo, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { type SceneRowData, ScenesTable, dclTable } from "decentraland-ui2"
 import {
@@ -25,18 +25,21 @@ export const BestNewScene: FC<BestNewSceneProps> = memo(
   ({ sceneRow, onMobileRowClick }) => {
     const { t } = useTranslation()
 
-    const newColumns: dclTable.Column<NewRow>[] = [
-      {
-        id: "new",
-        header: t("liveLeaderboard.rankHeader"),
-        cellPadding: 0,
-        render: (row) => (
-          <NewCell key={row.key}>
-            <NewBadge>{t("bestNewScene.newBadge")}</NewBadge>
-          </NewCell>
-        ),
-      },
-    ]
+    const newColumns: dclTable.Column<NewRow>[] = useMemo(
+      () => [
+        {
+          id: "new",
+          header: t("liveLeaderboard.rankHeader"),
+          cellPadding: 0,
+          render: (row) => (
+            <NewCell key={row.key}>
+              <NewBadge>{t("bestNewScene.newBadge")}</NewBadge>
+            </NewCell>
+          ),
+        },
+      ],
+      [t]
+    )
 
     return (
       <BestNewSceneContainer>
