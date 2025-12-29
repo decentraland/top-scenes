@@ -1,9 +1,10 @@
-import { type FC, memo, useEffect, useMemo } from "react"
+import { type FC, memo, useCallback, useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
 import { ROUTES } from "../../AppRoutes"
 import { getCurrentMonthKey } from "../../utils/dateUtils"
+import { openJumpIn } from "../../utils/jumpUtils"
 import { scrollToLeaderboard } from "../../utils/scrollUtils"
 import { BestNewScene } from "../BestNewScene"
 import { Countdown } from "./Countdown"
@@ -54,6 +55,12 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
       useGetRanking()
 
     const currentMonth = t(`previousWinners.months.${getCurrentMonthKey()}`)
+
+    const handleMobileRowClick = useCallback((row: { location?: string }) => {
+      if (row.location) {
+        openJumpIn(row.location)
+      }
+    }, [])
 
     useEffect(() => {
       if (!scrollOnLoad || isLoading) return
@@ -106,9 +113,17 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
               hoverEffect={false}
             />
           </RankTableWrapper>
-          <ScenesTable rows={sceneRows} />
+          <ScenesTable
+            rows={sceneRows}
+            onMobileRowClick={handleMobileRowClick}
+          />
         </TablesWrapper>
-        {bestNewScene && <BestNewScene sceneRow={bestNewScene} />}
+        {bestNewScene && (
+          <BestNewScene
+            sceneRow={bestNewScene}
+            onMobileRowClick={handleMobileRowClick}
+          />
+        )}
       </LiveLeaderboardContainer>
     )
   }
