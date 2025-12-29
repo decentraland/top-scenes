@@ -1,4 +1,4 @@
-import { type FC, memo, useEffect } from "react"
+import { type FC, memo, useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
@@ -6,6 +6,7 @@ import { ROUTES } from "../../AppRoutes"
 import { getCurrentMonthKey } from "../../utils/dateUtils"
 import { scrollToLeaderboard } from "../../utils/scrollUtils"
 import { BestNewScene } from "../BestNewScene"
+import { Countdown } from "./Countdown"
 import { useGetRanking } from "./useGetRanking"
 import {
   LiveLeaderboardContainer,
@@ -35,10 +36,20 @@ type LiveLeaderboardProps = {
   scrollOnLoad?: boolean
 }
 
+const LEADERBOARD_START_DAY = 4
+
+const isLeaderboardAvailable = (): boolean => {
+  const now = new Date()
+  return now.getUTCDate() >= LEADERBOARD_START_DAY
+}
+
 export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
   ({ scrollOnLoad }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+
+    const showLeaderboard = useMemo(() => isLeaderboardAvailable(), [])
+
     const { sceneRows, positionRows, bestNewScene, isLoading, isError } =
       useGetRanking()
 
@@ -49,6 +60,17 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
       scrollToLeaderboard()
       navigate(ROUTES.HOME, { replace: true })
     }, [scrollOnLoad, isLoading, navigate])
+
+    if (!showLeaderboard) {
+      return (
+        <LiveLeaderboardContainer id="leaderboard">
+          <LiveLeaderboardTitle>
+            {t("liveLeaderboard.title", { month: currentMonth })}
+          </LiveLeaderboardTitle>
+          <Countdown month={currentMonth} startDay={LEADERBOARD_START_DAY} />
+        </LiveLeaderboardContainer>
+      )
+    }
 
     if (isLoading) {
       return (
