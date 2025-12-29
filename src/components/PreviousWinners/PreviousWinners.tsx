@@ -1,4 +1,4 @@
-import { type FC, memo, useEffect, useState } from "react"
+import { type FC, memo, useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import {
@@ -7,14 +7,18 @@ import {
   SceneCard,
   SelectChangeEvent,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "decentraland-ui2"
 import { useGetPreviousWinners } from "./useGetPreviousWinners"
 import { ROUTES } from "../../AppRoutes"
 import { parseMonthParam } from "../../utils/dateUtils"
+import { openJumpIn } from "../../utils/jumpUtils"
 import { getBorderColor } from "../../utils/rankColors"
 import { scrollToRanking } from "../../utils/scrollUtils"
 import { RankingBadge } from "../RankingBadge"
 import {
+  ClickableSceneWrapper,
   LoadingWrapper,
   MonthSelect,
   PreviousWinnersContainer,
@@ -32,10 +36,21 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
   ({ initialMonth, scrollOnLoad }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"))
     const [selectedPeriod, setSelectedPeriod] = useState("")
 
     const { scenes, bestNewScene, availablePeriods, isLoading } =
       useGetPreviousWinners(selectedPeriod)
+
+    const handleCardClick = useCallback(
+      (coordinates: string) => {
+        if (isMobile) {
+          openJumpIn(coordinates)
+        }
+      },
+      [isMobile]
+    )
 
     useEffect(() => {
       if (availablePeriods.length === 0 || selectedPeriod) return
@@ -94,29 +109,36 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
         </PreviousWinnersHeader>
         <ScenesGrid key={selectedPeriod}>
           {scenes.map((scene, index) => (
-            <SceneCard
+            <ClickableSceneWrapper
               key={scene.id}
-              image={scene.image}
-              sceneName={scene.sceneName}
-              avatar={scene.avatar}
-              withShadow
-              borderColor={getBorderColor(index + 1)}
-              cornerBadge={<RankingBadge rank={index + 1} />}
-              coordinates={scene.coordinates}
-              showOnHover={["location", "jumpInButton"]}
-            />
+              onClick={() => handleCardClick(scene.coordinates)}
+            >
+              <SceneCard
+                image={scene.image}
+                sceneName={scene.sceneName}
+                avatar={scene.avatar}
+                withShadow
+                borderColor={getBorderColor(index + 1)}
+                cornerBadge={<RankingBadge rank={index + 1} />}
+                coordinates={scene.coordinates}
+                showOnHover={["location", "jumpInButton"]}
+              />
+            </ClickableSceneWrapper>
           ))}
           {bestNewScene && (
-            <SceneCard
-              key={bestNewScene.id}
-              image={bestNewScene.image}
-              sceneName={bestNewScene.sceneName}
-              avatar={bestNewScene.avatar}
-              withShadow
-              cornerBadge={<RankingBadge rank={0} isNew />}
-              coordinates={bestNewScene.coordinates}
-              showOnHover={["location", "jumpInButton"]}
-            />
+            <ClickableSceneWrapper
+              onClick={() => handleCardClick(bestNewScene.coordinates)}
+            >
+              <SceneCard
+                image={bestNewScene.image}
+                sceneName={bestNewScene.sceneName}
+                avatar={bestNewScene.avatar}
+                withShadow
+                cornerBadge={<RankingBadge rank={0} isNew />}
+                coordinates={bestNewScene.coordinates}
+                showOnHover={["location", "jumpInButton"]}
+              />
+            </ClickableSceneWrapper>
           )}
         </ScenesGrid>
       </PreviousWinnersContainer>
