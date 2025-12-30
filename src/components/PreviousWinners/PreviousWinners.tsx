@@ -10,7 +10,8 @@ import {
 } from "decentraland-ui2"
 import { useGetPreviousWinners } from "./useGetPreviousWinners"
 import { ROUTES } from "../../AppRoutes"
-import { useIsMobile } from "../../hooks/useIsMobile"
+import { useTrackJumpIn } from "../../hooks/useTrackJumpIn"
+import { Events } from "../../modules/analytics"
 import { parseMonthParam } from "../../utils/dateUtils"
 import { openJumpIn } from "../../utils/jumpUtils"
 import { getBorderColor } from "../../utils/rankColors"
@@ -35,20 +36,17 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
   ({ initialMonth, scrollOnLoad }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
-    const isMobile = useIsMobile()
     const [selectedPeriod, setSelectedPeriod] = useState("")
+    const { trackJumpIn } = useTrackJumpIn(
+      Events.JUMP_IN_TO_PREVIOUS_WINNERS_SCENE
+    )
 
     const { scenes, bestNewScene, availablePeriods, isLoading } =
       useGetPreviousWinners(selectedPeriod)
 
-    const handleCardClick = useCallback(
-      (coordinates: string) => {
-        if (isMobile) {
-          openJumpIn(coordinates)
-        }
-      },
-      [isMobile]
-    )
+    const handleCardClick = useCallback((coordinates: string) => {
+      openJumpIn(coordinates)
+    }, [])
 
     useEffect(() => {
       if (availablePeriods.length === 0 || selectedPeriod) return
@@ -120,6 +118,11 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
                 cornerBadge={<RankingBadge rank={index + 1} />}
                 coordinates={scene.coordinates}
                 showOnHover={["location", "jumpInButton"]}
+                onClick={() => handleCardClick(scene.coordinates)}
+                onJumpInTrack={trackJumpIn({
+                  sceneName: scene.sceneName,
+                  sceneLocation: scene.coordinates,
+                })}
               />
             </ClickableSceneWrapper>
           ))}
@@ -135,6 +138,10 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
                 cornerBadge={<RankingBadge rank={0} isNew />}
                 coordinates={bestNewScene.coordinates}
                 showOnHover={["location", "jumpInButton"]}
+                onJumpInTrack={trackJumpIn({
+                  sceneName: bestNewScene.sceneName,
+                  sceneLocation: bestNewScene.coordinates,
+                })}
               />
             </ClickableSceneWrapper>
           )}
