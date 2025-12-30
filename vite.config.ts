@@ -8,6 +8,13 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     plugins: [react()],
+    define: {
+      "process.env": {
+        VITE_REACT_APP_DCL_DEFAULT_ENV:
+          envVariables.VITE_REACT_APP_DCL_DEFAULT_ENV,
+        VITE_SEGMENT_PROD_API_KEY: envVariables.VITE_SEGMENT_PROD_API_KEY,
+      },
+    },
     ...(command === "build" ? { base: envVariables.VITE_BASE_URL } : undefined),
   }
 })

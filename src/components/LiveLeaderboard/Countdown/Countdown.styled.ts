@@ -13,7 +13,7 @@ const CountdownWrapper = styled(Box)(({ theme }) => ({
   borderRadius: theme.spacing(3),
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(4),
-    borderRadius: theme.spacing(2),
+    borderRadius: 0,
   },
 }))
 
