@@ -1,6 +1,7 @@
 import { type FC, memo, useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
+import { useAnalytics } from "@dcl/hooks"
 import {
   CircularProgress,
   MenuItem,
@@ -36,6 +37,7 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
   ({ initialMonth, scrollOnLoad }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { track } = useAnalytics()
     const [selectedPeriod, setSelectedPeriod] = useState("")
     const { trackJumpIn } = useTrackJumpIn(
       Events.JUMP_IN_TO_PREVIOUS_WINNERS_SCENE
@@ -44,9 +46,16 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
     const { scenes, bestNewScene, availablePeriods, isLoading } =
       useGetPreviousWinners(selectedPeriod)
 
-    const handleCardClick = useCallback((coordinates: string) => {
-      openJumpIn(coordinates)
-    }, [])
+    const handleCardClick = useCallback(
+      (sceneName: string, coordinates: string) => {
+        track(Events.PREVIOUS_WINNERS_MONTH_CHANGED, {
+          sceneName,
+          sceneLocation: coordinates,
+        })
+        openJumpIn(coordinates)
+      },
+      [track]
+    )
 
     useEffect(() => {
       if (availablePeriods.length === 0 || selectedPeriod) return
@@ -65,7 +74,11 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
     }, [scrollOnLoad, isLoading, selectedPeriod, navigate])
 
     const handlePeriodChange = (event: SelectChangeEvent<unknown>) => {
-      setSelectedPeriod(event.target.value as string)
+      const period = event.target.value as string
+      setSelectedPeriod(period)
+      track(Events.PREVIOUS_WINNERS_MONTH_CHANGED, {
+        period,
+      })
     }
 
     const getMonthKey = (period: string): string => period.split("/")[0] || "01"
@@ -107,7 +120,9 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
           {scenes.map((scene, index) => (
             <ClickableSceneWrapper
               key={scene.id}
-              onClick={() => handleCardClick(scene.coordinates)}
+              onClick={() =>
+                handleCardClick(scene.sceneName, scene.coordinates)
+              }
             >
               <SceneCard
                 image={scene.image}
@@ -118,7 +133,9 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
                 cornerBadge={<RankingBadge rank={index + 1} />}
                 coordinates={scene.coordinates}
                 showOnHover={["location", "jumpInButton"]}
-                onClick={() => handleCardClick(scene.coordinates)}
+                onClick={() =>
+                  handleCardClick(scene.sceneName, scene.coordinates)
+                }
                 onJumpInTrack={trackJumpIn({
                   sceneName: scene.sceneName,
                   sceneLocation: scene.coordinates,
@@ -128,7 +145,12 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
           ))}
           {bestNewScene && (
             <ClickableSceneWrapper
-              onClick={() => handleCardClick(bestNewScene.coordinates)}
+              onClick={() =>
+                handleCardClick(
+                  bestNewScene.sceneName,
+                  bestNewScene.coordinates
+                )
+              }
             >
               <SceneCard
                 image={bestNewScene.image}

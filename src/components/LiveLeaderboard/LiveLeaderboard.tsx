@@ -1,8 +1,10 @@
 import { type FC, memo, useCallback, useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
+import { useAnalytics } from "@dcl/hooks"
 import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
 import { ROUTES } from "../../AppRoutes"
+import { Events } from "../../modules/analytics"
 import { getCurrentMonthKey } from "../../utils/dateUtils"
 import { openJumpIn } from "../../utils/jumpUtils"
 import { scrollToLeaderboard } from "../../utils/scrollUtils"
@@ -48,6 +50,7 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
   ({ scrollOnLoad }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { track } = useAnalytics()
 
     const showLeaderboard = useMemo(() => isLeaderboardAvailable(), [])
 
@@ -56,11 +59,18 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
 
     const currentMonth = t(`previousWinners.months.${getCurrentMonthKey()}`)
 
-    const handleMobileRowClick = useCallback((row: { location?: string }) => {
-      if (row.location) {
-        openJumpIn(row.location)
-      }
-    }, [])
+    const handleMobileRowClick = useCallback(
+      (row: { location?: string; sceneName?: string }) => {
+        if (row.location) {
+          track(Events.VISIT_JUMP_IN_PAGE_LEADERBOARD, {
+            sceneName: row.sceneName,
+            sceneLocation: row.location,
+          })
+          openJumpIn(row.location)
+        }
+      },
+      [track]
+    )
 
     useEffect(() => {
       if (!scrollOnLoad || isLoading) return
