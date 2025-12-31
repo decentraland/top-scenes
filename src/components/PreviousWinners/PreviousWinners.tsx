@@ -25,6 +25,7 @@ import {
   PreviousWinnersContainer,
   PreviousWinnersHeader,
   PreviousWinnersTitle,
+  SceneCardWrapper,
   ScenesGrid,
 } from "./PreviousWinners.styled"
 
@@ -124,23 +125,25 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
                 handleCardClick(scene.sceneName, scene.coordinates)
               }
             >
-              <SceneCard
-                image={scene.image}
-                sceneName={scene.sceneName}
-                avatar={scene.avatar}
-                withShadow
-                borderColor={getBorderColor(index + 1)}
-                cornerBadge={<RankingBadge rank={index + 1} />}
-                coordinates={scene.coordinates}
-                showOnHover={["location", "jumpInButton"]}
-                onClick={() =>
-                  handleCardClick(scene.sceneName, scene.coordinates)
-                }
-                onJumpInTrack={trackJumpIn({
-                  sceneName: scene.sceneName,
-                  sceneLocation: scene.coordinates,
-                })}
-              />
+              <SceneCardWrapper>
+                <SceneCard
+                  image={scene.image}
+                  sceneName={scene.sceneName}
+                  avatar={scene.avatar}
+                  withShadow
+                  borderColor={getBorderColor(index + 1)}
+                  cornerBadge={<RankingBadge rank={index + 1} />}
+                  coordinates={scene.coordinates}
+                  showOnHover={["location", "jumpInButton"]}
+                  onClick={() =>
+                    handleCardClick(scene.sceneName, scene.coordinates)
+                  }
+                  onJumpInTrack={trackJumpIn({
+                    sceneName: scene.sceneName,
+                    sceneLocation: scene.coordinates,
+                  })}
+                />
+              </SceneCardWrapper>
             </ClickableSceneWrapper>
           ))}
           {bestNewScene && (
@@ -152,19 +155,21 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
                 )
               }
             >
-              <SceneCard
-                image={bestNewScene.image}
-                sceneName={bestNewScene.sceneName}
-                avatar={bestNewScene.avatar}
-                withShadow
-                cornerBadge={<RankingBadge rank={0} isNew />}
-                coordinates={bestNewScene.coordinates}
-                showOnHover={["location", "jumpInButton"]}
-                onJumpInTrack={trackJumpIn({
-                  sceneName: bestNewScene.sceneName,
-                  sceneLocation: bestNewScene.coordinates,
-                })}
-              />
+              <SceneCardWrapper>
+                <SceneCard
+                  image={bestNewScene.image}
+                  sceneName={bestNewScene.sceneName}
+                  avatar={bestNewScene.avatar}
+                  withShadow
+                  cornerBadge={<RankingBadge rank={0} isNew />}
+                  coordinates={bestNewScene.coordinates}
+                  showOnHover={["location", "jumpInButton"]}
+                  onJumpInTrack={trackJumpIn({
+                    sceneName: bestNewScene.sceneName,
+                    sceneLocation: bestNewScene.coordinates,
+                  })}
+                />
+              </SceneCardWrapper>
             </ClickableSceneWrapper>
           )}
         </ScenesGrid>
