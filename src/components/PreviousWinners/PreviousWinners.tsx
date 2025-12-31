@@ -48,7 +48,7 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
 
     const handleCardClick = useCallback(
       (sceneName: string, coordinates: string) => {
-        track(Events.PREVIOUS_WINNERS_MONTH_CHANGED, {
+        track(Events.JUMP_IN_TO_PREVIOUS_WINNERS_SCENE, {
           sceneName,
           sceneLocation: coordinates,
         })

@@ -1,9 +1,8 @@
-import { type FC, memo, useEffect } from "react"
+import { type FC, memo } from "react"
 import { useLocation, useParams } from "react-router-dom"
-import { useAnalytics, usePageTracking } from "@dcl/hooks"
+import { usePageTracking } from "@dcl/hooks"
 import { FooterLanding } from "decentraland-ui2"
 import { ROUTES } from "../../../AppRoutes"
-import { Events } from "../../../modules/analytics"
 import { Banner } from "../../Banner"
 import { LiveLeaderboard } from "../../LiveLeaderboard"
 import { MobileTabs } from "../../MobileTabs"
@@ -17,12 +16,8 @@ import {
 export const TopScenesPage: FC = memo(() => {
   const { pathname } = useLocation()
   const { month } = useParams<{ month?: string }>()
-  const { track } = useAnalytics()
-  usePageTracking(pathname)
 
-  useEffect(() => {
-    track(Events.PAGE_VIEW, { pathname })
-  }, [track, pathname])
+  usePageTracking(pathname)
 
   const isLeaderboardRoute = pathname.startsWith(ROUTES.LEADERBOARD)
   const isPreviousWinnersRoute = pathname.startsWith(ROUTES.PREVIOUS_WINNERS)

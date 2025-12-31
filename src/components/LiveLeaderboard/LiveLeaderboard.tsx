@@ -2,8 +2,15 @@ import { type FC, memo, useCallback, useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { useAnalytics } from "@dcl/hooks"
-import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
+import {
+  CircularProgress,
+  JumpInTrackingData,
+  SceneRowData,
+  ScenesTable,
+  dclTable,
+} from "decentraland-ui2"
 import { ROUTES } from "../../AppRoutes"
+import { useTrackJumpIn } from "../../hooks/useTrackJumpIn"
 import { Events } from "../../modules/analytics"
 import { getCurrentMonthKey } from "../../utils/dateUtils"
 import { openJumpIn } from "../../utils/jumpUtils"
@@ -51,6 +58,7 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
     const { t } = useTranslation()
     const navigate = useNavigate()
     const { track } = useAnalytics()
+    const { trackJumpIn } = useTrackJumpIn(Events.JUMP_IN_TO_LEADERBOARD_SCENE)
 
     const showLeaderboard = useMemo(() => isLeaderboardAvailable(), [])
 
@@ -70,6 +78,17 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
         }
       },
       [track]
+    )
+
+    const handleJumpInTrack = useCallback(
+      (data: JumpInTrackingData, row: SceneRowData) => {
+        console.log("handleJumpInTrack", { data, row })
+        trackJumpIn({
+          sceneName: row.sceneName,
+          sceneLocation: row.location,
+        })(data)
+      },
+      [trackJumpIn]
     )
 
     useEffect(() => {
@@ -126,12 +145,14 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
           <ScenesTable
             rows={sceneRows}
             onMobileRowClick={handleMobileRowClick}
+            onJumpInTrack={handleJumpInTrack}
           />
         </TablesWrapper>
         {bestNewScene && (
           <BestNewScene
             sceneRow={bestNewScene}
             onMobileRowClick={handleMobileRowClick}
+            onJumpInTrack={handleJumpInTrack}
           />
         )}
       </LiveLeaderboardContainer>

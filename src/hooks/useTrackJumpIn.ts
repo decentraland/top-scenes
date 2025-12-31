@@ -19,28 +19,20 @@ export const useTrackJumpIn = (event: JumpInEvent) => {
   const trackJumpIn = useCallback(
     ({ sceneName, sceneLocation }: TrackJumpInParams) => {
       return (data: JumpInTrackingData) => {
-        if (
-          data.type === JumpInEventType.JUMP_IN ||
-          data.type === JumpInEventType.OPEN_DOWNLOAD_MODAL
-        ) {
-          track(event, {
-            sceneName,
-            sceneLocation,
-            has_launcher: data.has_launcher,
-            mobile: userAgentData?.mobile,
-            os: userAgentData?.os?.name,
-            cpuArchitecture: userAgentData?.cpu?.architecture,
-          })
-        } else {
-          track(Events.CLICK_CLIENT_DOWNLOAD, {
-            sceneName,
-            sceneLocation,
-            has_launcher: data.has_launcher,
-            mobile: userAgentData?.mobile,
-            os: userAgentData?.os?.name,
-            cpuArchitecture: userAgentData?.cpu?.architecture,
-          })
+        let _event: Events = event
+
+        if (data.type === JumpInEventType.DOWNLOAD) {
+          _event = Events.CLICK_CLIENT_DOWNLOAD
         }
+
+        track(_event, {
+          sceneName,
+          sceneLocation,
+          has_launcher: data.has_launcher,
+          mobile: userAgentData?.mobile,
+          os: userAgentData?.os?.name,
+          cpuArchitecture: userAgentData?.cpu?.architecture,
+        })
       }
     },
     [track, event, userAgentData]
