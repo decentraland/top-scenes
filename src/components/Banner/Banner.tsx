@@ -1,7 +1,9 @@
-import { type FC, memo } from "react"
+import { type FC, memo, useCallback } from "react"
 import { useTranslation } from "react-i18next"
+import { useAnalytics } from "@dcl/hooks"
 import bannerBg from "../../images/banner_bg.webp"
 import bannerOverlay from "../../images/banner_overlay.webp"
+import { Events } from "../../modules/analytics"
 import { scrollToLeaderboard } from "../../utils/scrollUtils"
 import {
   BannerContainer,
@@ -15,6 +17,12 @@ import {
 
 export const Banner: FC = memo(() => {
   const { t } = useTranslation()
+  const { track } = useAnalytics()
+
+  const handleLeaderboardClick = useCallback(() => {
+    track(Events.CLICK_VIEW_LEADERBOARD_CTA)
+    scrollToLeaderboard()
+  }, [track])
 
   return (
     <BannerContainer>
@@ -26,7 +34,7 @@ export const Banner: FC = memo(() => {
         <LiveLeaderboardButton
           variant="contained"
           color="secondary"
-          onClick={scrollToLeaderboard}
+          onClick={handleLeaderboardClick}
         >
           {t("banner.button")}
         </LiveLeaderboardButton>

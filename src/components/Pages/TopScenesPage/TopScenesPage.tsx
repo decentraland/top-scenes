@@ -16,6 +16,7 @@ import {
 export const TopScenesPage: FC = memo(() => {
   const { pathname } = useLocation()
   const { month } = useParams<{ month?: string }>()
+
   usePageTracking(pathname)
 
   const isLeaderboardRoute = pathname.startsWith(ROUTES.LEADERBOARD)

@@ -12,6 +12,7 @@ const MobileTabsContainer = styled(Box)(({ theme }) => ({
 const StyledTabs = styled(Tabs)(({ theme }) => ({
   width: "100%",
   minHeight: "auto",
+  borderBottom: `1px solid ${theme.palette.divider}`,
   "& .MuiTabs-flexContainer": {
     justifyContent: "center",
   },

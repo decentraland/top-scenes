@@ -1,8 +1,17 @@
 import { type FC, memo, useCallback, useEffect, useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
-import { CircularProgress, ScenesTable, dclTable } from "decentraland-ui2"
+import { useAnalytics } from "@dcl/hooks"
+import {
+  CircularProgress,
+  JumpInTrackingData,
+  SceneRowData,
+  ScenesTable,
+  dclTable,
+} from "decentraland-ui2"
 import { ROUTES } from "../../AppRoutes"
+import { useTrackJumpIn } from "../../hooks/useTrackJumpIn"
+import { Events } from "../../modules/analytics"
 import { getCurrentMonthKey } from "../../utils/dateUtils"
 import { openJumpIn } from "../../utils/jumpUtils"
 import { scrollToLeaderboard } from "../../utils/scrollUtils"
@@ -48,6 +57,8 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
   ({ scrollOnLoad }) => {
     const { t } = useTranslation()
     const navigate = useNavigate()
+    const { track } = useAnalytics()
+    const { trackJumpIn } = useTrackJumpIn(Events.JUMP_IN_TO_LEADERBOARD_SCENE)
 
     const showLeaderboard = useMemo(() => isLeaderboardAvailable(), [])
 
@@ -56,11 +67,29 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
 
     const currentMonth = t(`previousWinners.months.${getCurrentMonthKey()}`)
 
-    const handleMobileRowClick = useCallback((row: { location?: string }) => {
-      if (row.location) {
-        openJumpIn(row.location)
-      }
-    }, [])
+    const handleMobileRowClick = useCallback(
+      (row: { location?: string; sceneName?: string }) => {
+        if (row.location) {
+          track(Events.VISIT_JUMP_IN_PAGE_LEADERBOARD, {
+            sceneName: row.sceneName,
+            sceneLocation: row.location,
+          })
+          openJumpIn(row.location)
+        }
+      },
+      [track]
+    )
+
+    const handleJumpInTrack = useCallback(
+      (data: JumpInTrackingData, row: SceneRowData) => {
+        console.log("handleJumpInTrack", { data, row })
+        trackJumpIn({
+          sceneName: row.sceneName,
+          sceneLocation: row.location,
+        })(data)
+      },
+      [trackJumpIn]
+    )
 
     useEffect(() => {
       if (!scrollOnLoad || isLoading) return
@@ -116,12 +145,14 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
           <ScenesTable
             rows={sceneRows}
             onMobileRowClick={handleMobileRowClick}
+            onJumpInTrack={handleJumpInTrack}
           />
         </TablesWrapper>
         {bestNewScene && (
           <BestNewScene
             sceneRow={bestNewScene}
             onMobileRowClick={handleMobileRowClick}
+            onJumpInTrack={handleJumpInTrack}
           />
         )}
       </LiveLeaderboardContainer>

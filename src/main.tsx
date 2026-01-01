@@ -6,6 +6,7 @@ import * as ReactDOM from "react-dom/client"
 import { DclThemeProvider, GlobalStyles, darkTheme } from "decentraland-ui2"
 import { App } from "./App"
 import { store } from "./app/store"
+import { config } from "./config"
 import { authConfig } from "./config/auth"
 import { AuthProvider } from "./contexts/auth"
 import "./intl/i18n"
@@ -29,7 +30,7 @@ const basename = /^decentraland.(zone|org|today)$/.test(window.location.host)
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>
-      <AnalyticsProvider writeKey="">
+      <AnalyticsProvider writeKey={config.get("SEGMENT_API_KEY") ?? ""}>
         <DclThemeProvider theme={darkTheme}>
           <GlobalStyles styles={globalStyles} />
           <BrowserRouter basename={basename}>

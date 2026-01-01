@@ -151,6 +151,14 @@ const ClickableSceneWrapper = styled(Box)(({ theme }) => ({
   },
 }))
 
+const SceneCardWrapper = styled(Box)(({ theme }) => ({
+  [theme.breakpoints.down("xs")]: {
+    "& .MuiCardContent-root": {
+      minHeight: "min-content",
+    },
+  },
+}))
+
 const LoadingWrapper = styled(Box)(({ theme }) => ({
   display: "none",
   alignItems: "center",
@@ -169,5 +177,6 @@ export {
   PreviousWinnersContainer,
   PreviousWinnersHeader,
   PreviousWinnersTitle,
+  SceneCardWrapper,
   ScenesGrid,
 }

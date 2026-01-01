@@ -1,6 +1,11 @@
 import { type FC, memo, useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { type SceneRowData, ScenesTable, dclTable } from "decentraland-ui2"
+import {
+  JumpInTrackingData,
+  type SceneRowData,
+  ScenesTable,
+  dclTable,
+} from "decentraland-ui2"
 import {
   BestNewSceneContainer,
   BestNewSceneTitle,
@@ -17,12 +22,13 @@ type NewRow = {
 type BestNewSceneProps = {
   sceneRow: SceneRowData
   onMobileRowClick?: (row: SceneRowData, index: number) => void
+  onJumpInTrack?: (data: JumpInTrackingData, row: SceneRowData) => void
 }
 
 const newRows: NewRow[] = [{ key: "new" }]
 
 export const BestNewScene: FC<BestNewSceneProps> = memo(
-  ({ sceneRow, onMobileRowClick }) => {
+  ({ sceneRow, onMobileRowClick, onJumpInTrack }) => {
     const { t } = useTranslation()
 
     const newColumns: dclTable.Column<NewRow>[] = useMemo(
@@ -52,7 +58,11 @@ export const BestNewScene: FC<BestNewSceneProps> = memo(
               hoverEffect={false}
             />
           </NewTableWrapper>
-          <ScenesTable rows={[sceneRow]} onMobileRowClick={onMobileRowClick} />
+          <ScenesTable
+            rows={[sceneRow]}
+            onMobileRowClick={onMobileRowClick}
+            onJumpInTrack={onJumpInTrack}
+          />
         </BestNewSceneWrapper>
       </BestNewSceneContainer>
     )
