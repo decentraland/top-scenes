@@ -136,7 +136,7 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
     if (!currentRankings.length) return { scenes: [], bestNewScene: null }
 
     const bestNew = currentRankings.find(
-      (r) => r.ranking === BEST_NEW_SCENE_RANKING
+      (r) => r.ranking === BEST_NEW_SCENE_RANKING && r.placeName !== "None"
     )
     const rankings = currentRankings
       .filter((r) => r.ranking !== BEST_NEW_SCENE_RANKING)

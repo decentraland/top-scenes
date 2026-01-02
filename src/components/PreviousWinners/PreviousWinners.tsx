@@ -147,30 +147,27 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
             </ClickableSceneWrapper>
           ))}
           {bestNewScene && (
-            <ClickableSceneWrapper
-              onClick={() =>
-                handleCardClick(
-                  bestNewScene.sceneName,
-                  bestNewScene.coordinates
-                )
-              }
-            >
-              <SceneCardWrapper>
-                <SceneCard
-                  image={bestNewScene.image}
-                  sceneName={bestNewScene.sceneName}
-                  avatar={bestNewScene.avatar}
-                  withShadow
-                  cornerBadge={<RankingBadge rank={0} isNew />}
-                  coordinates={bestNewScene.coordinates}
-                  showOnHover={["location", "jumpInButton"]}
-                  onJumpInTrack={trackJumpIn({
-                    sceneName: bestNewScene.sceneName,
-                    sceneLocation: bestNewScene.coordinates,
-                  })}
-                />
-              </SceneCardWrapper>
-            </ClickableSceneWrapper>
+            <SceneCardWrapper>
+              <SceneCard
+                image={bestNewScene.image}
+                sceneName={bestNewScene.sceneName}
+                avatar={bestNewScene.avatar}
+                withShadow
+                cornerBadge={<RankingBadge rank={0} isNew />}
+                coordinates={bestNewScene.coordinates}
+                showOnHover={["location", "jumpInButton"]}
+                onClick={() =>
+                  handleCardClick(
+                    bestNewScene.sceneName,
+                    bestNewScene.coordinates
+                  )
+                }
+                onJumpInTrack={trackJumpIn({
+                  sceneName: bestNewScene.sceneName,
+                  sceneLocation: bestNewScene.coordinates,
+                })}
+              />
+            </SceneCardWrapper>
           )}
         </ScenesGrid>
       </PreviousWinnersContainer>

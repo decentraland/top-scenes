@@ -82,7 +82,6 @@ export const LiveLeaderboard: FC<LiveLeaderboardProps> = memo(
 
     const handleJumpInTrack = useCallback(
       (data: JumpInTrackingData, row: SceneRowData) => {
-        console.log("handleJumpInTrack", { data, row })
         trackJumpIn({
           sceneName: row.sceneName,
           sceneLocation: row.location,
