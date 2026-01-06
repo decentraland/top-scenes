@@ -39,8 +39,8 @@ const TablesWrapper = styled(Box)(({ theme }) => ({
   },
   "& .MuiTableCell-root img": {
     width: "100px",
-    minWidth: "100",
-    maxWidth: "100x",
+    minWidth: "100px",
+    objectFit: "fill",
   },
   [theme.breakpoints.down("sm")]: {
     "& .MuiTableCell-root img": {
