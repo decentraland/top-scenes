@@ -34,7 +34,10 @@ const scenesApi = scenesClient.injectEndpoints({
             contactName,
             ranking,
             lastEventRegisteredAt,
-            positionChange: previousRanking - ranking,
+            positionChange:
+              previousRanking !== null && ranking !== null
+                ? previousRanking - ranking
+                : 0,
           })
         ),
       providesTags: ["SceneRanking"],
