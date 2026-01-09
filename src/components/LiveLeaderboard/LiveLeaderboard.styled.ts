@@ -40,20 +40,12 @@ const TablesWrapper = styled(Box)(({ theme }) => ({
   "& .MuiTableCell-root img": {
     width: "100px",
     minWidth: "100px",
-    objectFit: "fill",
   },
   [theme.breakpoints.down("sm")]: {
     "& .MuiTableCell-root img": {
       width: "70px",
       minWidth: "70px",
       maxWidth: "70px",
-    },
-    [theme.breakpoints.down("xs")]: {
-      "& .MuiTableCell-root img": {
-        width: "50px",
-        minWidth: "50px",
-        maxWidth: "50px",
-      },
     },
   },
 }))
@@ -65,7 +57,7 @@ const RankTableWrapper = styled(Box)(({ theme }) => ({
     padding: theme.spacing(0, 0, 0, 1),
   },
   [theme.breakpoints.down("sm")]: {
-    maxWidth: "64px",
+    maxWidth: "56px",
   },
 }))
 
