@@ -6,7 +6,7 @@ export const config = createConfig(
       SEGMENT_API_KEY: process.env.VITE_SEGMENT_DEV_API_KEY ?? "",
     },
     [Env.PRODUCTION as string]: {
-      SEGMENT_API_KEY: process.env.VITE_SEGMENT_PRD_API_KEY ?? "",
+      SEGMENT_API_KEY: process.env.VITE_SEGMENT_PROD_API_KEY ?? "",
     },
   },
   {
