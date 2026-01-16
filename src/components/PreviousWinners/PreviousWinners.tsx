@@ -19,7 +19,6 @@ import { getBorderColor } from "../../utils/rankColors"
 import { scrollToRanking } from "../../utils/scrollUtils"
 import { RankingBadge } from "../RankingBadge"
 import {
-  ClickableSceneWrapper,
   LoadingWrapper,
   MonthSelect,
   PreviousWinnersContainer,
@@ -49,7 +48,7 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
 
     const handleCardClick = useCallback(
       (sceneName: string, coordinates: string) => {
-        track(Events.JUMP_IN_TO_PREVIOUS_WINNERS_SCENE, {
+        track(Events.VISIT_JUMP_IN_PAGE_PREVIOUS_WINNERS, {
           sceneName,
           sceneLocation: coordinates,
         })
@@ -119,32 +118,25 @@ export const PreviousWinners: FC<PreviousWinnersProps> = memo(
         </PreviousWinnersHeader>
         <ScenesGrid key={selectedPeriod}>
           {scenes.map((scene, index) => (
-            <ClickableSceneWrapper
-              key={scene.id}
-              onClick={() =>
-                handleCardClick(scene.sceneName, scene.coordinates)
-              }
-            >
-              <SceneCardWrapper>
-                <SceneCard
-                  image={scene.image}
-                  sceneName={scene.sceneName}
-                  avatar={scene.avatar}
-                  withShadow
-                  borderColor={getBorderColor(index + 1)}
-                  cornerBadge={<RankingBadge rank={index + 1} />}
-                  coordinates={scene.coordinates}
-                  showOnHover={["location", "jumpInButton"]}
-                  onClick={() =>
-                    handleCardClick(scene.sceneName, scene.coordinates)
-                  }
-                  onJumpInTrack={trackJumpIn({
-                    sceneName: scene.sceneName,
-                    sceneLocation: scene.coordinates,
-                  })}
-                />
-              </SceneCardWrapper>
-            </ClickableSceneWrapper>
+            <SceneCardWrapper key={scene.id}>
+              <SceneCard
+                image={scene.image}
+                sceneName={scene.sceneName}
+                avatar={scene.avatar}
+                withShadow
+                borderColor={getBorderColor(index + 1)}
+                cornerBadge={<RankingBadge rank={index + 1} />}
+                coordinates={scene.coordinates}
+                showOnHover={["location", "jumpInButton"]}
+                onClick={() =>
+                  handleCardClick(scene.sceneName, scene.coordinates)
+                }
+                onJumpInTrack={trackJumpIn({
+                  sceneName: scene.sceneName,
+                  sceneLocation: scene.coordinates,
+                })}
+              />
+            </SceneCardWrapper>
           ))}
           {bestNewScene && (
             <SceneCardWrapper>
