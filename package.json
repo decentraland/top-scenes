@@ -35,7 +35,7 @@
   "dependencies": {
     "@dcl/hooks": "^1.0.0",
     "@dcl/schemas": "^22.0.0",
-    "@dcl/single-sign-on-client": "^0.1.0",
+    "@dcl/single-sign-on-client": "^2.0.0",
     "@dcl/ui-env": "^1.5.1",
     "@reduxjs/toolkit": "^2.11.2",
     "decentraland-connect": "^10.0.0",
