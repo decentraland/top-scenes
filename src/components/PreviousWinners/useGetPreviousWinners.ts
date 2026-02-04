@@ -7,7 +7,9 @@ import { isEns, useGetPlacesAndWorldsQuery } from "../../features/places"
 import { useGetProfilesQuery } from "../../features/profiles"
 import { useGetPreviousMonthRankingQuery } from "../../features/scenes"
 import sceneThumbnail from "../../images/scene-thumbnail.webp"
+import { extractValidCreatorAddresses } from "../../utils/addressUtils"
 import { createPlaceholderAvatar } from "../../utils/avatarUtils"
+import { sortPeriodsByDate } from "../../utils/dateUtils"
 import { isValidPosition } from "../../utils/locationUtils"
 import type { Place } from "../../features/places"
 import type { PreviousMonthRanking } from "../../features/scenes"
@@ -78,31 +80,20 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
   const { data: rankingsByPeriod, isLoading: isLoadingRankings } =
     useGetPreviousMonthRankingQuery()
 
-  const availablePeriods = useMemo(() => {
-    if (!rankingsByPeriod) return []
-    return Object.keys(rankingsByPeriod).sort((a, b) => {
-      const [monthA, yearA] = a.split("/").map(Number)
-      const [monthB, yearB] = b.split("/").map(Number)
-      if (yearB !== yearA) return yearB - yearA
-      return monthB - monthA
-    })
-  }, [rankingsByPeriod])
+  const availablePeriods = useMemo(
+    () => sortPeriodsByDate(Object.keys(rankingsByPeriod ?? {})),
+    [rankingsByPeriod]
+  )
 
   const currentRankings = useMemo(() => {
     if (!rankingsByPeriod || !selectedPeriod) return []
     return rankingsByPeriod[selectedPeriod] || []
   }, [rankingsByPeriod, selectedPeriod])
 
-  const creatorAddresses = useMemo(() => {
-    if (!currentRankings.length) return []
-    return [
-      ...new Set(
-        currentRankings
-          .map((scene) => scene.creator.toLowerCase())
-          .filter((addr) => addr && addr.startsWith("0x"))
-      ),
-    ]
-  }, [currentRankings])
+  const creatorAddresses = useMemo(
+    () => extractValidCreatorAddresses(currentRankings),
+    [currentRankings]
+  )
 
   const { positions, worlds } = useMemo(() => {
     if (!currentRankings.length) return { positions: [], worlds: [] }
