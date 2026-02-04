@@ -27,5 +27,18 @@ const calculateTimeRemaining = (expireDate: Date): TimeRemaining => {
   return { hours: totalHours, minutes, seconds }
 }
 
-export { calculateTimeRemaining, getCurrentMonthKey, parseMonthParam }
+const sortPeriodsByDate = (periods: string[]): string[] =>
+  [...periods].sort((a, b) => {
+    const [monthA, yearA] = a.split("/").map(Number)
+    const [monthB, yearB] = b.split("/").map(Number)
+    if (yearB !== yearA) return yearB - yearA
+    return monthB - monthA
+  })
+
+export {
+  calculateTimeRemaining,
+  getCurrentMonthKey,
+  parseMonthParam,
+  sortPeriodsByDate,
+}
 export type { TimeRemaining }

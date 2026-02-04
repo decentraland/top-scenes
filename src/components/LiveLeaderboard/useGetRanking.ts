@@ -7,6 +7,7 @@ import {
 import { isEns, useGetPlacesAndWorldsQuery } from "../../features/places"
 import { useGetProfilesQuery } from "../../features/profiles"
 import { useGetCurrentMonthRankingQuery } from "../../features/scenes"
+import { extractValidCreatorAddresses } from "../../utils/addressUtils"
 import { isValidPosition } from "../../utils/locationUtils"
 import { getBorderColor } from "../../utils/rankColors"
 
@@ -41,10 +42,10 @@ export const useGetRanking = () => {
     return { rankings, bestNewSceneRanking: bestNew || null }
   }, [data])
 
-  const creatorAddresses = useMemo(() => {
-    if (!data) return []
-    return [...new Set(data.map((scene) => scene.creator.toLowerCase()))]
-  }, [data])
+  const creatorAddresses = useMemo(
+    () => extractValidCreatorAddresses(data ?? []),
+    [data]
+  )
 
   const { positions, worlds } = useMemo(() => {
     if (!data) return { positions: [], worlds: [] }
