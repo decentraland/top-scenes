@@ -43,7 +43,13 @@ export const useGetRanking = () => {
 
   const creatorAddresses = useMemo(() => {
     if (!data) return []
-    return [...new Set(data.map((scene) => scene.creator.toLowerCase()))]
+    return [
+      ...new Set(
+        data
+          .map((scene) => scene.creator.toLowerCase())
+          .filter((addr) => addr && addr.startsWith("0x"))
+      ),
+    ]
   }, [data])
 
   const { positions, worlds } = useMemo(() => {

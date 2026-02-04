@@ -80,7 +80,12 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
 
   const availablePeriods = useMemo(() => {
     if (!rankingsByPeriod) return []
-    return Object.keys(rankingsByPeriod).sort().reverse()
+    return Object.keys(rankingsByPeriod).sort((a, b) => {
+      const [monthA, yearA] = a.split("/").map(Number)
+      const [monthB, yearB] = b.split("/").map(Number)
+      if (yearB !== yearA) return yearB - yearA
+      return monthB - monthA
+    })
   }, [rankingsByPeriod])
 
   const currentRankings = useMemo(() => {
@@ -91,7 +96,11 @@ export const useGetPreviousWinners = (selectedPeriod: string) => {
   const creatorAddresses = useMemo(() => {
     if (!currentRankings.length) return []
     return [
-      ...new Set(currentRankings.map((scene) => scene.creator.toLowerCase())),
+      ...new Set(
+        currentRankings
+          .map((scene) => scene.creator.toLowerCase())
+          .filter((addr) => addr && addr.startsWith("0x"))
+      ),
     ]
   }, [currentRankings])
 
