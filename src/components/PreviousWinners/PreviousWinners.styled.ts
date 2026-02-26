@@ -1,4 +1,5 @@
-import { Box, Select, keyframes, styled } from "decentraland-ui2"
+import { keyframes } from "@emotion/react"
+import { Box, Select, styled } from "decentraland-ui2"
 
 const fadeIn = keyframes({
   from: {

@@ -11,10 +11,7 @@ import {
 } from "react"
 import { useLocation } from "react-router-dom"
 import { type Avatar, ChainId } from "@dcl/schemas"
-import {
-  localStorageClearIdentity,
-  localStorageGetIdentity,
-} from "@dcl/single-sign-on-client"
+import { LocalStorageUtils } from "@dcl/single-sign-on-client"
 import { connection } from "decentraland-connect"
 import {
   AuthContextValue,
@@ -63,7 +60,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
 
       // Clear identity if we have a wallet address
       if (wallet) {
-        localStorageClearIdentity(wallet)
+        LocalStorageUtils.setIdentity(wallet, null)
       }
 
       // Clear state
@@ -176,7 +173,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
             // Check identity inline to avoid dependency issues
             let isValidIdentity = false
             try {
-              const identity = localStorageGetIdentity(walletAddress)
+              const identity = LocalStorageUtils.getIdentity(walletAddress)
               if (identity && identity.expiration) {
                 const expiration = new Date(identity.expiration)
                 const now = new Date()
