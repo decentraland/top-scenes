@@ -2,11 +2,11 @@ import { type FC, memo, useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 import { useAnalytics } from "@dcl/hooks"
+import type { SelectChangeEvent } from "@mui/material"
 import {
   CircularProgress,
   MenuItem,
   SceneCard,
-  SelectChangeEvent,
   Typography,
 } from "decentraland-ui2"
 import { useGetPreviousWinners } from "./useGetPreviousWinners"
