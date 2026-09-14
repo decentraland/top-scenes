@@ -25,7 +25,7 @@ jobs:
           cache: "npm"
 
       - name: Set package.json version
-        uses: decentraland/oddish-action@master
+        uses: decentraland/oddish-action@v1
         with:
           deterministic-snapshot: true
           only-update-versions: true
@@ -43,7 +43,7 @@ jobs:
           VITE_SEGMENT_PROD_API_KEY: ${{ secrets.SEGMENT_PROD_API_KEY }}
 
       - name: Publish
-        uses: decentraland/oddish-action@master
+        uses: decentraland/oddish-action@v1
         with:
           cwd: "./dist"
           deterministic-snapshot: true
